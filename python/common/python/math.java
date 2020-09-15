@@ -22,7 +22,7 @@ public class math extends org.python.math.Module {
     @org.python.Method(
             __doc__ = ""
     )
-    public static org.python.Object _math_function() {
+    public static org.python.Object math_function() {
         throw new org.python.exceptions.NotImplementedError("math._math_function() has not been implemented.");
     }
 

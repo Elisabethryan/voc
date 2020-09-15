@@ -1,1 +1,2 @@
-from math import math
+from math import *
+print("test has run")
