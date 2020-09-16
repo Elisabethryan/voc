@@ -1,29 +1,20 @@
 package python;
 
 @org.python.Module(
-        __doc__ = "\math?\n"
+        __doc__ ="\n"
 )
-public class math extends org.python.math.Module {
-    static {
-
+public class math extends org.python.types.Module {
+    public math() {
+        super();
     }
-
-    private static long variable;
-
-    // @org.python.Attribute
-    // public static org.python.Object BuiltinFunctionType;
-
-    // @org.python.Attribute
-    // public static org.python.Object BuiltinMethodType;
-    @org.python.Attribute
-    public static org.python.Object attribute;
-
 
     @org.python.Method(
-            __doc__ = ""
+            __doc__ = "Returns a new subclass of tuple with named fields.\n" +
+                "\n",
+            args = {"number"}
     )
-    public static org.python.Object math_function() {
-        throw new org.python.exceptions.NotImplementedError("math._math_function() has not been implemented.");
+    public static int floor(org.python.Object number) {
+      double num = ((org.python.types.Float) number).value;
+          return (int) Math.floor(num);
     }
-
 }
