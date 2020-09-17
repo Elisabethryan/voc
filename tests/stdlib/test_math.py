@@ -1,7 +1,7 @@
-from ..utils import TranspileTestCase
+from .. import utils
 
-class MathModuleTests(TranspileTestCase):
-    def test_floor(self):
+class MathModuleTests(utils.TranspileTestCase):
+    def test_math(self):
         self.assertCodeExecution("""
             import math
             print(math.abs(-5))
