@@ -1,9 +1,9 @@
 package python;
 
 @org.python.Module(
-        __doc__ = "\math?\n"
+        __doc__ = "\nMath module\n"
 )
-public class math extends org.python.math.Module {
+public class math extends org.python.types.Module {
     static {
 
     }
@@ -23,7 +23,7 @@ public class math extends org.python.math.Module {
             __doc__ = ""
     )
     public static org.python.Object math_function() {
-        throw new org.python.exceptions.NotImplementedError("math._math_function() has not been implemented.");
+        throw new org.python.exceptions.NotImplementedError("math.math_function() has not been implemented.");
     }
 
 }
