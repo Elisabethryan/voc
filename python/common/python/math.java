@@ -1,7 +1,7 @@
 package python;
 
 @org.python.Module(
-        __doc__ ="\n"
+        __doc__ ="MathModule\n"
 )
 public class math extends org.python.types.Module {
     public math() {
@@ -9,7 +9,7 @@ public class math extends org.python.types.Module {
     }
 
     @org.python.Method(
-            __doc__ = "Returns a new subclass of tuple with named fields.\n" +
+            __doc__ = "Returns the number floored to closest int.\n" +
                 "\n",
             args = {"number"}
     )
