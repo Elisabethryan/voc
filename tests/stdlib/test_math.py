@@ -4,5 +4,5 @@ class MathModuleTests(utils.TranspileTestCase):
     def test_abs(self):
         self.assertCodeExecution("""
             import math
-            print(math.fabs(-5))
+            print(math.fabs(-5.0))
         """)
