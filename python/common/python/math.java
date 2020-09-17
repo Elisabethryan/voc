@@ -1,6 +1,5 @@
 package python;
-import java.lang.*;
-import org.python.types.Int;
+
 
 @org.python.Module(
         __doc__ =  "This module implements functions similar to those found in the math module in python\n"
