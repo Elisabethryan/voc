@@ -1,3 +1,3 @@
 import math
 
-print(math.floor(3.4))
+print(math.abs(-5))
