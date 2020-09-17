@@ -1,29 +1,23 @@
 package python;
 
+import java.lang.*;
+
 @org.python.Module(
         __doc__ = "\nMath module\n"
 )
 public class math extends org.python.types.Module {
-    static {
-
+    public math(){
+        super();
     }
-
-    private static long variable;
-
-    // @org.python.Attribute
-    // public static org.python.Object BuiltinFunctionType;
-
-    // @org.python.Attribute
-    // public static org.python.Object BuiltinMethodType;
-    @org.python.Attribute
-    public static org.python.Object attribute;
 
 
     @org.python.Method(
-            __doc__ = ""
+        __doc__ = "Implements the Math.ceil function",
+        args = {"number"}
     )
-    public static org.python.Object math_function() {
-        throw new org.python.exceptions.NotImplementedError("math.math_function() has not been implemented.");
+    public static int ceil(org.python.Object number) {
+        double num = ((org.python.types.Float) number.__float__()).value;
+        return (int)Math.ceil(num);
     }
 
 }
