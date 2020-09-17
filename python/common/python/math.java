@@ -13,9 +13,9 @@ public class math extends org.python.types.Module {
         __doc__ = "Returns a the absolute value of the provided argument\n",
         args = {"x"}
     )
-    public static int abs(org.python.Object x) {
-        long abs = ((org.python.types.Int) x).value;
-        return (int) java.lang.Math.abs(abs);
+    public static double fabs(org.python.Object x) {
+        double abs = ((org.python.types.Float) x).value;
+        return Math.abs(abs);
     }
 
 }
