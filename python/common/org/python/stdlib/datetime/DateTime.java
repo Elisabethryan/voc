@@ -12,7 +12,7 @@ public class DateTime extends org.python.types.Object {
     private final int MICROSECOND_INDEX = 6;
 
     private final int MIN_YEAR = 1;
-    private final int MAX_YEAR = 999;
+    private final int MAX_YEAR = 9999;
 
     private Long[] timeUnits = { 0l, 0l, 0l, 0l, 0l, 0l, 0l };
 
@@ -88,7 +88,7 @@ public class DateTime extends org.python.types.Object {
 	    throw new org.python.exceptions.ValueError("second " + this.timeUnits[SECOND_INDEX] + "is out of range");
 	}
 
-	if (this.timeUnits[MICROSECOND_INDEX] < 0 || this.timeUnits[MICROSECOND_INDEX] > 100000) {
+	if (this.timeUnits[MICROSECOND_INDEX] < 0 || this.timeUnits[MICROSECOND_INDEX] > 1000000) {
 	    throw new org.python.exceptions.ValueError("microsecond " + this.timeUnits[MICROSECOND_INDEX] + "is out of range");
 	}
 
@@ -188,7 +188,7 @@ public class DateTime extends org.python.types.Object {
     }
 
     @org.python.Method(__doc__ = "")
-    private static org.python.Object __min__() {
+    protected static org.python.Object __min__() {
 	org.python.types.Int year = org.python.types.Int.getInt(1);
 	org.python.types.Int month = org.python.types.Int.getInt(1);
 	org.python.types.Int day = org.python.types.Int.getInt(1);
@@ -198,7 +198,7 @@ public class DateTime extends org.python.types.Object {
     }
 
     @org.python.Method(__doc__ = "")
-    private static org.python.Object __max__() {
+    protected static org.python.Object __max__() {
 	org.python.types.Int year = org.python.types.Int.getInt(9999);
 	org.python.types.Int month = org.python.types.Int.getInt(12);
 	org.python.types.Int day = org.python.types.Int.getInt(31);
