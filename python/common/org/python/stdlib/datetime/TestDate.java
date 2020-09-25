@@ -21,9 +21,10 @@ import org.python.types.Str;
 public class TestDate {
 
     protected void setUp() {
-
+        //Probably never going to be used?
     }
 
+    //Tests for value error exceptions 
     @Test(expected = ValueError.class)
     public void testValueError() {
         //Testing ranges on year
@@ -61,6 +62,7 @@ public class TestDate {
     }
 
 
+    //Tests for type error exceptions 
     @Test(expected = TypeError.class)
     public void testTypeError() {
         Map<String, Object> null_kwargs = Collections.emptyMap();
@@ -110,6 +112,7 @@ public class TestDate {
     }
 
 
+    //Tests for syntax error exceptions 
     @Test(expected = SyntaxError.class)
     public void testSyntaxError() {
 
@@ -124,7 +127,19 @@ public class TestDate {
         kwargs1.put("day", Int.getInt(10));
         new Date(new Object[] {Int.getInt(10), Int.getInt(10)}, kwargs1);
 
+    }
 
+
+    @Test
+    public void testDate() {
+        org.python.types.Int year = org.python.types.Int.getInt(2020);
+		org.python.types.Int month = org.python.types.Int.getInt(9);
+        org.python.types.Int day = org.python.types.Int.getInt(25);
+
+        Map<String, Object> null_kwargs = Collections.emptyMap();
+        org.python.Object[] args = {year, month, day};
+
+        
     }
 
 
