@@ -10,6 +10,9 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.python.Object;
+import org.python.exceptions.SyntaxError;
+import org.python.exceptions.TypeError;
+import org.python.exceptions.ValueError;
 import org.python.types.Int;
 // Constructor test? (Different tests at creating DateTime object)
 // Attribute tests? (Check that they are set correctly)
@@ -17,6 +20,69 @@ import org.python.types.Int;
 
 
 class DateTimeTest {
+
+	@Test
+	void test_exceptions() {
+		Map<String, Object> empty_kwargs = Collections.emptyMap();
+
+		Assert.assertThrows(TypeError.class, () -> {
+			new DateTime(new Object[] {}, empty_kwargs);
+		});
+
+		Assert.assertThrows(TypeError.class, () -> {
+			new DateTime(new Object[] { Int.getInt(2000) }, empty_kwargs);
+		});
+
+		Assert.assertThrows(TypeError.class, () -> {
+			Map<String, Object> kwargs = new HashMap<>();
+			kwargs.put("year", Int.getInt(2000));
+			new DateTime(new Object[] {}, kwargs);
+		});
+
+		Assert.assertThrows(SyntaxError.class, () -> {
+			Map<String, Object> kwargs = new HashMap<>();
+			kwargs.put("year", Int.getInt(2000));
+			kwargs.put("month", Int.getInt(6));
+			kwargs.put("day", Int.getInt(6));
+			new DateTime(new Object[] { Int.getInt(5) }, kwargs);
+		});
+
+		Assert.assertThrows(ValueError.class, () -> {
+			new DateTime(new Object[] { Int.getInt(-10), Int.getInt(6), Int.getInt(6) }, empty_kwargs);
+		});
+
+		Assert.assertThrows(ValueError.class, () -> {
+			new DateTime(new Object[] { Int.getInt(10), Int.getInt(-6), Int.getInt(6) }, empty_kwargs);
+		});
+
+		Assert.assertThrows(ValueError.class, () -> {
+			new DateTime(new Object[] { Int.getInt(10), Int.getInt(6), Int.getInt(-6) }, empty_kwargs);
+		});
+
+		Assert.assertThrows(ValueError.class, () -> {
+			Map<String, Object> kwargs = new HashMap<>();
+			kwargs.put("hour", Int.getInt(25));
+			new DateTime(new Object[] { Int.getInt(1779), Int.getInt(7), Int.getInt(4) }, kwargs);
+		});
+
+		Assert.assertThrows(ValueError.class, () -> {
+			Map<String, Object> kwargs = new HashMap<>();
+			kwargs.put("minute", Int.getInt(62));
+			new DateTime(new Object[] { Int.getInt(1779), Int.getInt(7), Int.getInt(4) }, kwargs);
+		});
+
+		Assert.assertThrows(ValueError.class, () -> {
+			Map<String, Object> kwargs = new HashMap<>();
+			kwargs.put("second", Int.getInt(404));
+			new DateTime(new Object[] { Int.getInt(1779), Int.getInt(7), Int.getInt(4) }, kwargs);
+		});
+
+		Assert.assertThrows(ValueError.class, () -> {
+			Map<String, Object> kwargs = new HashMap<>();
+			kwargs.put("microsecond", Int.getInt(-1));
+			new DateTime(new Object[] { Int.getInt(1779), Int.getInt(7), Int.getInt(4) }, kwargs);
+		});
+	}
 	
 	@Test
 	void test_date() {
