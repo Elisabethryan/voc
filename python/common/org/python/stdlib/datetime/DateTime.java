@@ -1,6 +1,10 @@
 package org.python.stdlib.datetime;
 
+import java.util.Arrays;
 import java.util.Collections;
+
+import org.python.types.Bool;
+import org.python.types.NotImplementedType;
 
 public class DateTime extends org.python.types.Object {
 	private final int YEAR_INDEX = 0;
@@ -230,5 +234,99 @@ public class DateTime extends org.python.types.Object {
 		int[] convertToPython = { 6, 0, 1, 2, 3, 4, 5 };
 		return org.python.types.Int.getInt(convertToPython[day - 1]);
 
+	}
+	
+	public org.python.Object __eq__(org.python.Object other) {
+		if (this == other) {
+			return Bool.TRUE;
+		} else if (other instanceof DateTime) {
+			var that = (DateTime) other;
+			return Bool.getBool(Arrays.equals(this.timeUnits, that.timeUnits));
+		}
+
+		return NotImplementedType.NOT_IMPLEMENTED;
+	}
+
+	public org.python.Object __ne__(org.python.Object other) {
+		if (this == other) {
+			return Bool.FALSE;
+		} else if (other instanceof DateTime) {
+			var that = (DateTime) other;
+			return Bool.getBool(!Arrays.equals(this.timeUnits, that.timeUnits));
+		}
+
+		return NotImplementedType.NOT_IMPLEMENTED;
+	}
+
+	public org.python.Object __lt__(org.python.Object other) {
+		if (this == other) {
+			return Bool.FALSE;
+		} else if (other instanceof DateTime) {
+			var that = (DateTime) other;
+
+			for (int i = 0; i < timeUnits.length; i++) {
+				if (this.timeUnits[i] < that.timeUnits[i])
+					return Bool.TRUE;
+				else if (this.timeUnits[i] > that.timeUnits[i])
+					return Bool.FALSE;
+			}
+
+			return Bool.FALSE;
+		}
+
+		return NotImplementedType.NOT_IMPLEMENTED;
+	}
+
+	public org.python.Object __le__(org.python.Object other) {
+		if (this == other) {
+			return Bool.TRUE;
+		} else if (other instanceof DateTime) {
+			var that = (DateTime) other;
+
+			for (int i = 0; i < timeUnits.length; i++) {
+				if (this.timeUnits[i] > that.timeUnits[i])
+					return Bool.FALSE;
+			}
+
+			return Bool.TRUE;
+		}
+
+		return NotImplementedType.NOT_IMPLEMENTED;
+	}
+
+	public org.python.Object __gt__(org.python.Object other) {
+		if (this == other) {
+			return Bool.FALSE;
+		} else if (other instanceof DateTime) {
+			var that = (DateTime) other;
+
+			for (int i = 0; i < timeUnits.length; i++) {
+				if (this.timeUnits[i] < that.timeUnits[i])
+					return Bool.FALSE;
+				else if (this.timeUnits[i] > that.timeUnits[i])
+					return Bool.TRUE;
+			}
+
+			return Bool.FALSE;
+		}
+
+		return NotImplementedType.NOT_IMPLEMENTED;
+	}
+
+	public org.python.Object __ge__(org.python.Object other) {
+		if (this == other) {
+			return Bool.TRUE;
+		} else if (other instanceof DateTime) {
+			var that = (DateTime) other;
+
+			for (int i = 0; i < timeUnits.length; i++) {
+				if (this.timeUnits[i] < that.timeUnits[i])
+					return Bool.FALSE;
+			}
+
+			return Bool.TRUE;
+		}
+
+		return NotImplementedType.NOT_IMPLEMENTED;
 	}
 }
