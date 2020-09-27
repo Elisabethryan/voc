@@ -217,12 +217,32 @@ public class DateTest {
     }
 
 
+   //helper function to make assert work
+    public java.lang.Boolean helpEq(org.python.Object obj1, org.python.Object obj2) {
+        return ((Bool) obj1.__eq__(obj2)).value;
+    }
+
     @Test
     public void test_eq() {
+
+        //Two instances of equivalent attribute values
         Date testDate1 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
-        Date testDate2 = new Date(new Object[] {Int.getInt(2), Int.getInt(2), Int.getInt(2)}, null_kwargs);
-        //Assert.assertT(testDate1.__eq__(testDate2));
+        Date testDate2 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+        Assert.assertTrue(helpEq(testDate1, testDate2));
+        Assert.assertTrue(helpEq(testDate2, testDate1));
+
+        //Test for inequal objects
+        testDate2 = new Date(new Object[] {Int.getInt(2), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+        Assert.assertFalse(helpEq(testDate1, testDate2));
+        testDate2 = new Date(new Object[] {Int.getInt(1), Int.getInt(2), Int.getInt(1)}, null_kwargs);
+        Assert.assertFalse(helpEq(testDate1, testDate2));
+        testDate2 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(2)}, null_kwargs);
+        Assert.assertFalse(helpEq(testDate1, testDate2));
+
+        //Test for same instance
+        Assert.assertTrue(helpEq(testDate1, testDate1));
     }
+
 
 
 
