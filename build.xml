@@ -2,7 +2,6 @@
   <description>
     Build Python support libraries for voc
   </description>
-
   <property environment="env"/>
   <property name="release" value="7"/>
   <exec executable="python" outputProperty="python-version">
@@ -55,5 +54,9 @@
   <target name="clean" description="Clean up">
     <delete dir="${build}"/>
     <delete dir="${dist}"/>
+  </target>
+
+  <target name="java_test">
+    <ant antfile="build-java.xml" target="test"/>
   </target>
 </project>
