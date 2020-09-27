@@ -3,7 +3,6 @@ package org.python.stdlib.datetime;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.python.stdlib.datetime.Date;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,10 +14,9 @@ import org.python.Object;
 import org.python.exceptions.SyntaxError;
 import org.python.exceptions.TypeError;
 import org.python.exceptions.ValueError;
-import org.python.types.Int;
-import org.python.types.Str;
+import org.python.types.*;
 
-public class TestDate {
+public class DateTest {
 
     Map<String, Object> null_kwargs = Collections.emptyMap();
     protected void setUp() {
@@ -193,9 +191,10 @@ public class TestDate {
     @Test
     public void test_today() {
         Date dateTodayTest = new Date(new Object[] {Int.getInt(1), Int.getInt(2), Int.getInt(3)}, null_kwargs);
+        Date date = (Date) dateTodayTest.today();
         java.time.LocalDateTime actualToday = java.time.LocalDateTime.now();
 
-        org.python.Object yearNow = 
+        //org.python.Object yearNow = 
 
        // Assert.assertEquals(todayYear.toJava(), (long) actualToday.getYear());
 
