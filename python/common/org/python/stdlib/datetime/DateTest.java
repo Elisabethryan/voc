@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Assert;
-//import org.junit.jupiter.api.Test;
 import org.python.Object;
 import org.python.exceptions.SyntaxError;
 import org.python.exceptions.TypeError;
@@ -193,11 +192,30 @@ public class DateTest {
         Date dateTodayTest = new Date(new Object[] {Int.getInt(1), Int.getInt(2), Int.getInt(3)}, null_kwargs);
         Date date = (Date) dateTodayTest.today();
         java.time.LocalDateTime actualToday = java.time.LocalDateTime.now();
-
-        //org.python.Object yearNow = 
-
-       // Assert.assertEquals(todayYear.toJava(), (long) actualToday.getYear());
-
+        //may need some toJavas here
+        org.python.Object yearNow = date.year;
+        Assert.assertEquals(yearNow, (long) actualToday.getYear());
+        org.python.Object monthNow = date.month;
+        Assert.assertEquals(monthNow, (long) actualToday.getMonth().getValue());
+        org.python.Object dayNow = date.day;
+        Assert.assertEquals(dayNow, (long) actualToday.getDayOfMonth());
+        
     }
+
+    @Test
+    public void test_ctime() {
+        Date testDate = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+        Assert.assertEquals(testDate.ctime(), new org.python.types.Str("Mon Jan 1 00:00:00 1"));
+    }
+
+    @Test
+    public void test_weekday() {
+        Date testDate = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+        java.time.LocalDateTime weekdayToday = java.time.LocalDateTime.now();
+        org.python.Object weekday = testDate.weekday();
+        Assert.assertEquals(weekday, weekdayToday.getDayOfWeek());
+    }
+
+
 
 }
