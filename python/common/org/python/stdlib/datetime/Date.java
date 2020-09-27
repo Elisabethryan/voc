@@ -2,6 +2,10 @@ package org.python.stdlib.datetime;
 
 import java.util.Collections;
 
+import org.python.exceptions.NotImplementedError;
+import org.python.types.Bool;
+import org.python.types.NotImplementedType;
+
 public class Date extends org.python.types.Object {
 
     @org.python.Attribute
@@ -225,7 +229,7 @@ public class Date extends org.python.types.Object {
 
     }
 
-    @org.python.Method(__doc__ = "")
+    @org.python.Method(__doc__ = "Returns real worlds current date")
     public static org.python.Object today() {
 	java.time.LocalDateTime today = java.time.LocalDateTime.now();
 	int y = today.getYear();
@@ -263,5 +267,20 @@ public class Date extends org.python.types.Object {
 	int[] convertToPython = { 6, 0, 1, 2, 3, 4, 5 };
 	return org.python.types.Int.getInt(convertToPython[day - 1]);
 
+    }
+
+    @org.python.Method(__doc__ = "")
+    public org.python.Object __eq__(org.python.Object obj) {
+        if(obj instanceof Date) {
+            var toCompare = (Date) obj;
+            if(toCompare.year == this.year && toCompare.month == this.month && toCompare.day == this.day) {
+                return Bool.TRUE;
+            }
+        }
+        if(this == obj) {
+            return Bool.TRUE;
+        } 
+        
+        return Bool.FALSE;
     }
 }
