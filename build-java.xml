@@ -3,6 +3,10 @@
     Build Python support libraries for voc
   </description>
 
+
+
+
+
   <target name="compile" description="Compile the Oracle-specific source">
     <mkdir dir="${build}/java"/>
     <javac debug="true"
@@ -11,6 +15,8 @@
            destdir="${build}/java">
       <src path="${src}/common" />
       <src path="${src}/java" />
+      <classpath path="lib/hamcrest-core-1.3.jar" />
+      <classpath path="lib/junit-4.12.jar" />
     </javac>
   </target>
 
@@ -60,5 +66,44 @@
   <target name="clean" description="Clean up">
     <delete dir="${build}"/>
     <delete dir="${dist}"/>
+  </target>
+
+
+  <!--Ant related -->
+  <property name="main.build.dir" value="python/common/org/python/stdlib/dateTime"/>
+  <property name="main.src.dir" value="python/common/org/python/stdlib/dateTime"/>
+  <property name="test.build.dir" value="python/common/org/python/stdlib/dateTime"/>
+  <property name="test.src.dir" value="python/common/org/python/stdlib/dateTime"/>
+
+  <path id="classpath.test">
+    <pathelement location="lib/junit-4.12.jar"/>
+    <pathelement location="lib/hamcrest-core-1.3.jar"/>
+    <pathelement location="${build}/java"/>
+    <pathelement location="${build}/java"/>
+  </path>
+
+  <target name="compile-junit">
+    <mkdir dir="${main.build.dir}"/>
+    <javac srcdir="${main.src.dir}" destdir="${main.build.dir}" includeantruntime="false"/>
+  </target>
+
+  <target name="test-compile">
+    <mkdir dir="${test.build.dir}"/>
+    <javac srcdir="${test.src.dir}" destdir="${test.build.dir}" includeantruntime="false">
+        <classpath refid="classpath.test"/>
+    </javac>
+  </target>
+
+  <target name="test" depends="test-compile">
+    <junit printsummary="on" haltonfailure="yes" fork="true">
+        <classpath>
+          <path refid="classpath.test"/>
+          <pathelement location="${test.build.dir}"/>
+        </classpath>
+        <formatter type="brief" usefile="false" />
+        <batchtest>
+            <fileset dir="${main.src.dir}" includes="**/*Test.java" />
+        </batchtest>
+    </junit>
   </target>
 </project>
