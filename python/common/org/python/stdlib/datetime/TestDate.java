@@ -20,6 +20,7 @@ import org.python.types.Str;
 
 public class TestDate {
 
+    Map<String, Object> null_kwargs = Collections.emptyMap();
     protected void setUp() {
         //Probably never going to be used?
     }
@@ -131,17 +132,73 @@ public class TestDate {
 
 
     @Test
-    public void testDate() {
-        org.python.types.Int year = org.python.types.Int.getInt(2020);
-		org.python.types.Int month = org.python.types.Int.getInt(9);
-        org.python.types.Int day = org.python.types.Int.getInt(25);
+    public void test_repr() {
+       Date testDate1 = new Date(new Object[] {Int.getInt(1), Int.getInt(2), Int.getInt(3)}, null_kwargs); 
+       Assert.assertEquals(testDate1.__repr__(), new org.python.types.Str("1-2-3"));
 
-        Map<String, Object> null_kwargs = Collections.emptyMap();
-        org.python.Object[] args = {year, month, day};
+       Date testDate2 = new Date(new Object[] {Int.getInt(10), Int.getInt(10), Int.getInt(30)}, null_kwargs); 
+       Assert.assertEquals(testDate2.__repr__(), new org.python.types.Str("10-10-30"));
 
-        
+       Date testDate3 = new Date(new Object[] {Int.getInt(100), Int.getInt(10), Int.getInt(30)}, null_kwargs); 
+       Assert.assertEquals(testDate3.__repr__(), new org.python.types.Str("100-10-30"));
+
+       Date testDate4 = new Date(new Object[] {Int.getInt(1000), Int.getInt(10), Int.getInt(30)}, null_kwargs); 
+       Assert.assertEquals(testDate4.__repr__(), new org.python.types.Str("1000-10-30"));
+
+       Date testDate5 = new Date(new Object[] {Int.getInt(0), Int.getInt(0), Int.getInt(0)}, null_kwargs); 
+       Assert.assertEquals(testDate5.__repr__(), new org.python.types.Str("0-0-0"));
+    }
+
+    @Test
+    public void test_year() {
+       Date testDate1 = new Date(new Object[] {Int.getInt(0), Int.getInt(0), Int.getInt(0)}, null_kwargs);
+       Date testDate2 = new Date(new Object[] {Int.getInt(2020), Int.getInt(0), Int.getInt(0)}, null_kwargs);
+       Assert.assertEquals(testDate1.__year__(), new org.python.types.Str(""));
+       Assert.assertEquals(testDate2.__year__(), new org.python.types.Str("2020"));
+    }
+
+    @Test
+    public void test_month() {
+       Date testDate1 = new Date(new Object[] {Int.getInt(0), Int.getInt(0), Int.getInt(0)}, null_kwargs);
+       Date testDate2 = new Date(new Object[] {Int.getInt(0), Int.getInt(9), Int.getInt(0)}, null_kwargs);
+       Assert.assertEquals(testDate1.__month__(), new org.python.types.Str(""));
+       Assert.assertEquals(testDate2.__month__(), new org.python.types.Str("2020"));
+    }
+
+    @Test
+    public void test_day() {
+       Date testDate1 = new Date(new Object[] {Int.getInt(0), Int.getInt(0), Int.getInt(0)}, null_kwargs);
+       Date testDate2 = new Date(new Object[] {Int.getInt(0), Int.getInt(0), Int.getInt(25)}, null_kwargs);
+       Assert.assertEquals(testDate1.__day__(), new org.python.types.Str(""));
+       Assert.assertEquals(testDate2.__day__(), new org.python.types.Str("25"));
+    }
+
+    @Test
+    public void test_max() {
+        Date testDate = (Date) Date.__max__();
+        Assert.assertEquals(testDate.year, Int.getInt(9999));
+        Assert.assertEquals(testDate.month, Int.getInt(12));
+        Assert.assertEquals(testDate.day, Int.getInt(31));
+    }
+
+    @Test
+    public void test_min() {
+        Date testDate = (Date) Date.__min__();
+        Assert.assertEquals(testDate.year, Int.getInt(1));
+        Assert.assertEquals(testDate.month, Int.getInt(1));
+        Assert.assertEquals(testDate.day, Int.getInt(1));
     }
 
 
+    @Test
+    public void test_today() {
+        Date dateTodayTest = new Date(new Object[] {Int.getInt(1), Int.getInt(2), Int.getInt(3)}, null_kwargs);
+        java.time.LocalDateTime actualToday = java.time.LocalDateTime.now();
+
+        org.python.Object yearNow = 
+
+       // Assert.assertEquals(todayYear.toJava(), (long) actualToday.getYear());
+
+    }
 
 }
