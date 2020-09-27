@@ -217,5 +217,13 @@ public class DateTest {
     }
 
 
+    @Test
+    public void test_eq() {
+        Date testDate1 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+        Date testDate2 = new Date(new Object[] {Int.getInt(2), Int.getInt(2), Int.getInt(2)}, null_kwargs);
+        //Assert.assertT(testDate1.__eq__(testDate2));
+    }
+
+
 
 }
