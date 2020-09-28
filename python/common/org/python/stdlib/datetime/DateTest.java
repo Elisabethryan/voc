@@ -245,7 +245,7 @@ public class DateTest {
     }
 
     @Test
-    public void test_eq() {
+    public void testEq() {
 
         //Two instances of equivalent attribute values
         Date testDate1 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
