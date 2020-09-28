@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="python/android"/>
+	<classpathentry kind="src" path="python/common"/>
+	<classpathentry kind="src" path="python/java"/>
+	<classpathentry kind="src" path="python/testdaemon"/>
+	<classpathentry kind="lib" path="dist/Python-3.5-Java-support.b7.jar"/>
+	<classpathentry kind="lib" path="dist/Python-3.5-Java-testdaemon.b7.jar"/>
+	<classpathentry kind="lib" path="dist/python-java-support.jar"/>
+	<classpathentry kind="lib" path="dist/python-java-testdaemon.jar"/>
+	<classpathentry kind="lib" path="lib/checkstyle-6.19-all.jar"/>
+	<classpathentry kind="lib" path="lib/hamcrest-core-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.13.jar"/>
+	<classpathentry kind="output" path="build/java"/>
+</classpath>
