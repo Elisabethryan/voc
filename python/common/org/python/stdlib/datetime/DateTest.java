@@ -4,6 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.python.stdlib.datetime.Date;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,7 +57,6 @@ public class DateTest {
         new Date(new Object[] {Int.getInt(-2020), Int.getInt(9), Int.getInt(23)}, null_kwargs);
         new Date(new Object[] {Int.getInt(2020), Int.getInt(-9), Int.getInt(23)}, null_kwargs);
         new Date(new Object[] {Int.getInt(-2020), Int.getInt(9), Int.getInt(-23)}, null_kwargs);
-
     }
 
 
@@ -129,49 +129,55 @@ public class DateTest {
 
 
     @Test
-    public void test_repr() {
+    public void testRepr() {
        Date testDate1 = new Date(new Object[] {Int.getInt(1), Int.getInt(2), Int.getInt(3)}, null_kwargs); 
-       Assert.assertEquals(testDate1.__repr__(), new org.python.types.Str("1-2-3"));
+       Assert.assertEquals(testDate1.__repr__(), new org.python.types.Str("0001-02-03"));
 
        Date testDate2 = new Date(new Object[] {Int.getInt(10), Int.getInt(10), Int.getInt(30)}, null_kwargs); 
-       Assert.assertEquals(testDate2.__repr__(), new org.python.types.Str("10-10-30"));
+       Assert.assertEquals(testDate2.__repr__(), new org.python.types.Str("0010-10-30"));
 
        Date testDate3 = new Date(new Object[] {Int.getInt(100), Int.getInt(10), Int.getInt(30)}, null_kwargs); 
-       Assert.assertEquals(testDate3.__repr__(), new org.python.types.Str("100-10-30"));
+       Assert.assertEquals(testDate3.__repr__(), new org.python.types.Str("0100-10-30"));
 
        Date testDate4 = new Date(new Object[] {Int.getInt(1000), Int.getInt(10), Int.getInt(30)}, null_kwargs); 
        Assert.assertEquals(testDate4.__repr__(), new org.python.types.Str("1000-10-30"));
+    }
 
-       Date testDate5 = new Date(new Object[] {Int.getInt(0), Int.getInt(0), Int.getInt(0)}, null_kwargs); 
-       Assert.assertEquals(testDate5.__repr__(), new org.python.types.Str("0-0-0"));
+    @Test(expected = ValueError.class)
+    public void testYear() {
+       Date testValidYear = new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+       Assert.assertEquals(testValidYear.__year__(), new org.python.types.Str("2020"));
+       
+       Date testEdgeCaseYear = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+       Assert.assertEquals(testEdgeCaseYear.__year__(), new org.python.types.Str("1"));
+       
+       // TODO: maybe should be moved to own method. Otherwise code above could pass if it throws ValueError even if it shouldn't.
+       new Date(new Object[] {Int.getInt(0), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+    }
+
+    @Test(expected = ValueError.class)
+    public void testMonth() {
+       Date testDate = new Date(new Object[] {Int.getInt(2020), Int.getInt(9), Int.getInt(1)}, null_kwargs);
+       Assert.assertEquals(testDate.__month__(), new org.python.types.Str("9"));
+       
+       // TODO: maybe should be moved to own method. Otherwise code above could pass if it throws ValueError even if it shouldn't.
+       new Date(new Object[] {Int.getInt(2020), Int.getInt(0), Int.getInt(1)}, null_kwargs);
+    }
+
+    @Test(expected = ValueError.class)
+    public void testDay() {
+    	Date testDateOneChar = new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+        Assert.assertEquals(testDateOneChar.__day__(), new org.python.types.Str("1"));
+    	
+       Date testDateTwoChars = new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(25)}, null_kwargs);
+       Assert.assertEquals(testDateTwoChars.__day__(), new org.python.types.Str("25"));
+       
+       // TODO: maybe should be moved to own method. Otherwise code above could pass if it throws ValueError even if it shouldn't.
+       new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(0)}, null_kwargs);
     }
 
     @Test
-    public void test_year() {
-       Date testDate1 = new Date(new Object[] {Int.getInt(0), Int.getInt(0), Int.getInt(0)}, null_kwargs);
-       Date testDate2 = new Date(new Object[] {Int.getInt(2020), Int.getInt(0), Int.getInt(0)}, null_kwargs);
-       Assert.assertEquals(testDate1.__year__(), new org.python.types.Str(""));
-       Assert.assertEquals(testDate2.__year__(), new org.python.types.Str("2020"));
-    }
-
-    @Test
-    public void test_month() {
-       Date testDate1 = new Date(new Object[] {Int.getInt(0), Int.getInt(0), Int.getInt(0)}, null_kwargs);
-       Date testDate2 = new Date(new Object[] {Int.getInt(0), Int.getInt(9), Int.getInt(0)}, null_kwargs);
-       Assert.assertEquals(testDate1.__month__(), new org.python.types.Str(""));
-       Assert.assertEquals(testDate2.__month__(), new org.python.types.Str("2020"));
-    }
-
-    @Test
-    public void test_day() {
-       Date testDate1 = new Date(new Object[] {Int.getInt(0), Int.getInt(0), Int.getInt(0)}, null_kwargs);
-       Date testDate2 = new Date(new Object[] {Int.getInt(0), Int.getInt(0), Int.getInt(25)}, null_kwargs);
-       Assert.assertEquals(testDate1.__day__(), new org.python.types.Str(""));
-       Assert.assertEquals(testDate2.__day__(), new org.python.types.Str("25"));
-    }
-
-    @Test
-    public void test_max() {
+    public void testMax() {
         Date testDate = (Date) Date.__max__();
         Assert.assertEquals(testDate.year, Int.getInt(9999));
         Assert.assertEquals(testDate.month, Int.getInt(12));
@@ -179,7 +185,7 @@ public class DateTest {
     }
 
     @Test
-    public void test_min() {
+    public void testMin() {
         Date testDate = (Date) Date.__min__();
         Assert.assertEquals(testDate.year, Int.getInt(1));
         Assert.assertEquals(testDate.month, Int.getInt(1));
@@ -188,32 +194,48 @@ public class DateTest {
 
 
     @Test
-    public void test_today() {
-        Date dateTodayTest = new Date(new Object[] {Int.getInt(1), Int.getInt(2), Int.getInt(3)}, null_kwargs);
-        Date date = (Date) dateTodayTest.today();
-        java.time.LocalDateTime actualToday = java.time.LocalDateTime.now();
-        //may need some toJavas here
-        org.python.Object yearNow = date.year;
-        Assert.assertEquals(yearNow, (long) actualToday.getYear());
-        org.python.Object monthNow = date.month;
-        Assert.assertEquals(monthNow, (long) actualToday.getMonth().getValue());
-        org.python.Object dayNow = date.day;
-        Assert.assertEquals(dayNow, (long) actualToday.getDayOfMonth());
+    public void testToday() {
+        Date pythonToday = (Date) Date.today();
+        java.time.LocalDateTime javaToday = java.time.LocalDateTime.now();
         
+        Assert.assertEquals(pythonToday.year.toJava(), (long) javaToday.getYear());
+        Assert.assertEquals(pythonToday.month.toJava(), (long) javaToday.getMonth().getValue());
+        Assert.assertEquals(pythonToday.day.toJava(), (long) javaToday.getDayOfMonth());
     }
 
     @Test
-    public void test_ctime() {
+    public void testCtime() {
         Date testDate = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
-        Assert.assertEquals(testDate.ctime(), new org.python.types.Str("Mon Jan 1 00:00:00 1"));
+        Assert.assertEquals(testDate.ctime(), new org.python.types.Str("Sat Jan  1 00:00:00 1"));
     }
 
     @Test
-    public void test_weekday() {
-        Date testDate = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
-        java.time.LocalDateTime weekdayToday = java.time.LocalDateTime.now();
-        org.python.Object weekday = testDate.weekday();
-        Assert.assertEquals(weekday, weekdayToday.getDayOfWeek());
+    public void testWeekday() {
+    	// Try "edge cases" with Sundays and Mondays first which are represented differently in Python and Java
+    	// The 5th of January 2020 is a Sunday, the 6th day in Python
+        Date pythonSunday = new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(5)}, null_kwargs);
+        Assert.assertEquals(pythonSunday.weekday().toJava(), (long)6);
+        
+        // The 6th of January 2020 is a Monday, the 0th day in Python
+        Date pythonMonday = new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(6)}, null_kwargs);
+        Assert.assertEquals(pythonMonday.weekday().toJava(), (long)0);
+        
+        // The 7th of January 2020 is a Tuesday, the 1st day in Python
+        Date pythonTuesday = new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(7)}, null_kwargs);
+        Assert.assertEquals(pythonTuesday.weekday().toJava(), (long)1);
+    }
+    
+    @Test
+    public void testIsoweekday() {
+    	// Simply check that all weekdays are the same in Java as in Python (which it should be)
+    	for (int i = 1; i <= 7; i++) {
+    		Assert.assertEquals(
+    			(new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(i)}, null_kwargs)).weekday().toJava(),
+    			// Behold, black magic. Or is it? Nah, since the 1st of january 2020 is a wednesday (day 3 according to ISO-standard),
+    			// we just need to adjust by 2 to make the assertion correct
+    			(long)((i + 1) % 7)
+    		);
+    	}
     }
 
 
@@ -319,8 +341,4 @@ public class DateTest {
         Assert.assertTrue(helpLeq(Date.__max__(), Date.__min__()));
         Assert.assertFalse(helpLeq(Date.__min__(), Date.__min__()));
     }
-
-
-
-
 }

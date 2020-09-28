@@ -272,10 +272,10 @@ public class Date extends org.python.types.Object {
     @org.python.Method(__doc__ = "Returns if two Dates hold same values or is the same instance")
     public org.python.Object __eq__(org.python.Object obj) {
         if(obj instanceof Date) {
-            var toCompare = (Date) obj;
+            /*var toCompare = (Date) obj;
             if(toCompare.year == this.year && toCompare.month == this.month && toCompare.day == this.day) {
                 return Bool.TRUE;
-            }
+            }*/
         }
         if(this == obj) {
             return Bool.TRUE;
@@ -287,10 +287,11 @@ public class Date extends org.python.types.Object {
     @org.python.Method(__doc__ = "Returns true if arg date is older than this")
     public org.python.Object __lt__(org.python.Object obj) {
         if(obj instanceof Date) {
-            org.python.types.Str year = this.year;
-            if((this.year) < toCompare.year) {
+            /*var toCompare = (Date) obj;
+            if((this.year).toJava()) < ((toCompare.year).toJava()) {
+>>>>>>> 2b80d067a250f162680d0f9410775bb79107516e
 
-            }
+            }*/
 
         }
         if(this == obj) {
@@ -298,5 +299,18 @@ public class Date extends org.python.types.Object {
         }
 
         return Bool.FALSE;
+    }
+    
+    @org.python.Method(__doc__ = "Return the day of the week as an integer, where Monday is 1 and Sunday is 7.")
+    public org.python.Object isoweekday(){
+    	double y = ((org.python.types.Int) this.year).value;
+    	double m = ((org.python.types.Int) this.month).value;
+    	double d = ((org.python.types.Int) this.day).value;
+
+    	java.util.Date myCalendar = new java.util.GregorianCalendar((int) y, (int) m - 1, (int) d).getTime();
+    	java.util.Calendar c = java.util.Calendar.getInstance();
+    	c.setTime(myCalendar);
+    	
+    	return org.python.types.Int.getInt(c.get(java.util.GregorianCalendar.DAY_OF_WEEK));
     }
 }
