@@ -210,13 +210,17 @@ public class DateTest {
 
     @Test
     public void testWeekday() {
-    	// Try edge cases with Sundays and Mondays first which are represented differently in Python and Java
-    	// The 5th of January 2020 is a Sunday
+    	// Try "edge cases" with Sundays and Mondays first which are represented differently in Python and Java
+    	// The 5th of January 2020 is a Sunday, the 6th day in Python
         Date pythonSunday = new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(5)}, null_kwargs);
         Assert.assertEquals(pythonSunday.weekday().toJava(), (long)6);
         
-        // The 6th of January 2020 is a Monday
+        // The 6th of January 2020 is a Monday, the 0th day in Python
         Date pythonMonday = new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(6)}, null_kwargs);
         Assert.assertEquals(pythonMonday.weekday().toJava(), (long)0);
+        
+        // The 7th of January 2020 is a Tuesday, the 1st day in Python
+        Date pythonTuesday = new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(7)}, null_kwargs);
+        Assert.assertEquals(pythonTuesday.weekday().toJava(), (long)1);
     }
 }
