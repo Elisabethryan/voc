@@ -4,6 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.python.stdlib.datetime.Date;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,7 +57,6 @@ public class DateTest {
         new Date(new Object[] {Int.getInt(-2020), Int.getInt(9), Int.getInt(23)}, null_kwargs);
         new Date(new Object[] {Int.getInt(2020), Int.getInt(-9), Int.getInt(23)}, null_kwargs);
         new Date(new Object[] {Int.getInt(-2020), Int.getInt(9), Int.getInt(-23)}, null_kwargs);
-
     }
 
 
@@ -203,19 +203,20 @@ public class DateTest {
     }
 
     @Test
-    public void test_ctime() {
+    public void testCtime() {
         Date testDate = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
         Assert.assertEquals(testDate.ctime(), new org.python.types.Str("Mon Jan 1 00:00:00 1"));
     }
 
     @Test
-    public void test_weekday() {
-        Date testDate = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
-        java.time.LocalDateTime weekdayToday = java.time.LocalDateTime.now();
-        org.python.Object weekday = testDate.weekday();
-        Assert.assertEquals(weekday, weekdayToday.getDayOfWeek());
+    public void testWeekday() {
+    	// Try edge cases with Sundays and Mondays first which are represented differently in Python and Java
+    	// The 5th of January 2020 is a Sunday
+        Date pythonSunday = new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(5)}, null_kwargs);
+        Assert.assertEquals(pythonSunday.weekday().toJava(), (long)6);
+        
+        // The 6th of January 2020 is a Monday
+        Date pythonMonday = new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(6)}, null_kwargs);
+        Assert.assertEquals(pythonMonday.weekday().toJava(), (long)0);
     }
-
-
-
 }
