@@ -206,7 +206,7 @@ public class DateTest {
     @Test
     public void testCtime() {
         Date testDate = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
-        Assert.assertEquals(testDate.ctime(), new org.python.types.Str("Sat Jan 1 00:00:00 1"));
+        Assert.assertEquals(testDate.ctime(), new org.python.types.Str("Sat Jan  1 00:00:00 1"));
     }
 
     @Test
@@ -223,6 +223,19 @@ public class DateTest {
         // The 7th of January 2020 is a Tuesday, the 1st day in Python
         Date pythonTuesday = new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(7)}, null_kwargs);
         Assert.assertEquals(pythonTuesday.weekday().toJava(), (long)1);
+    }
+    
+    @Test
+    public void testIsoweekday() {
+    	// Simply check that all weekdays are the same in Java as in Python (which it should be)
+    	for (int i = 1; i <= 7; i++) {
+    		Assert.assertEquals(
+    			(new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(i)}, null_kwargs)).weekday().toJava(),
+    			// Behold, black magic. Or is it? Nah, since the 1st of january 2020 is a wednesday (day 3 according to ISO-standard),
+    			// we just need to adjust by 2 to make the assertion correct
+    			(long)((i + 1) % 7)
+    		);
+    	}
     }
 
 

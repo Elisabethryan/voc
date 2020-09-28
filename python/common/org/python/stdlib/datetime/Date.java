@@ -251,7 +251,7 @@ public class Date extends org.python.types.Object {
 	double weekdayNum = ((org.python.types.Int) weekday()).value;
 	String weekdayStr = weekdayList[(int) weekdayNum];
 
-	return new org.python.types.Str(weekdayStr + " " + monthStr + " " + this.day + " 00:00:00 " + this.year);
+	return new org.python.types.Str(weekdayStr + " " + monthStr + "  " + this.day + " 00:00:00 " + this.year);
     }
 
     @org.python.Method(__doc__ = "")
@@ -295,5 +295,18 @@ public class Date extends org.python.types.Object {
         }
 
         return Bool.FALSE;
+    }
+    
+    @org.python.Method(__doc__ = "Return the day of the week as an integer, where Monday is 1 and Sunday is 7.")
+    public org.python.Object isoweekday(){
+    	double y = ((org.python.types.Int) this.year).value;
+    	double m = ((org.python.types.Int) this.month).value;
+    	double d = ((org.python.types.Int) this.day).value;
+
+    	java.util.Date myCalendar = new java.util.GregorianCalendar((int) y, (int) m - 1, (int) d).getTime();
+    	java.util.Calendar c = java.util.Calendar.getInstance();
+    	c.setTime(myCalendar);
+    	
+    	return org.python.types.Int.getInt(c.get(java.util.GregorianCalendar.DAY_OF_WEEK));
     }
 }
