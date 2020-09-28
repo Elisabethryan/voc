@@ -1,5 +1,10 @@
 package org.python.stdlib.datetime;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.TemporalField;
+import java.util.Calendar;
 import java.util.Collections;
 
 import org.python.exceptions.NotImplementedError;
@@ -350,5 +355,18 @@ public class Date extends org.python.types.Object {
     	c.setTime(myCalendar);
     	
     	return org.python.types.Int.getInt(c.get(java.util.GregorianCalendar.DAY_OF_WEEK));
+    }
+    
+    @org.python.Method(__doc__ = "")
+    public static org.python.Object utcnow() {
+    	ZoneId z = ZoneId.of("UTC");
+        ZonedDateTime zdt = ZonedDateTime.now(z);
+    	
+    	int y = zdt.getYear();
+    	int m = zdt.getMonth().getValue();
+    	int d = zdt.getDayOfMonth();
+    			
+    	org.python.Object[] args = { org.python.types.Int.getInt(y), org.python.types.Int.getInt(m), org.python.types.Int.getInt(d) };
+    	return new Date(args, Collections.emptyMap());
     }
 }

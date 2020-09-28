@@ -202,6 +202,16 @@ public class DateTest {
         Assert.assertEquals(pythonToday.month.toJava(), (long) javaToday.getMonth().getValue());
         Assert.assertEquals(pythonToday.day.toJava(), (long) javaToday.getDayOfMonth());
     }
+    
+    @Test
+    public void testUTCNow() {
+        Date pythonToday = (Date) Date.utcnow();
+        java.time.LocalDateTime javaToday = java.time.LocalDateTime.now();
+        
+        Assert.assertEquals(pythonToday.year.toJava(), (long) javaToday.getYear());
+        Assert.assertEquals(pythonToday.month.toJava(), (long) javaToday.getMonth().getValue());
+        Assert.assertEquals(pythonToday.day.toJava(), (long) javaToday.getDayOfMonth());
+    }
 
     @Test
     public void testCtime() {
