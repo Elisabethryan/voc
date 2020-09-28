@@ -164,12 +164,16 @@ public class DateTest {
        new Date(new Object[] {Int.getInt(2020), Int.getInt(0), Int.getInt(1)}, null_kwargs);
     }
 
-    @Test
+    @Test(expected = ValueError.class)
     public void testDay() {
-       Date testDate1 = new Date(new Object[] {Int.getInt(0), Int.getInt(0), Int.getInt(0)}, null_kwargs);
-       Date testDate2 = new Date(new Object[] {Int.getInt(0), Int.getInt(0), Int.getInt(25)}, null_kwargs);
-       Assert.assertEquals(testDate1.__day__(), new org.python.types.Str(""));
-       Assert.assertEquals(testDate2.__day__(), new org.python.types.Str("25"));
+    	Date testDateOneChar = new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+        Assert.assertEquals(testDateOneChar.__day__(), new org.python.types.Str("1"));
+    	
+       Date testDateTwoChars = new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(25)}, null_kwargs);
+       Assert.assertEquals(testDateTwoChars.__day__(), new org.python.types.Str("25"));
+       
+       // TODO: maybe should be moved to own method. Otherwise code above could pass if it throws ValueError even if it shouldn't.
+       new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(0)}, null_kwargs);
     }
 
     @Test
