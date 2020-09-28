@@ -146,12 +146,16 @@ public class DateTest {
        Assert.assertEquals(testDate5.__repr__(), new org.python.types.Str("0-0-0"));
     }
 
-    @Test
+    @Test(expected = ValueError.class)
     public void testYear() {
-       Date testDate1 = new Date(new Object[] {Int.getInt(0), Int.getInt(0), Int.getInt(0)}, null_kwargs);
-       Date testDate2 = new Date(new Object[] {Int.getInt(2020), Int.getInt(0), Int.getInt(0)}, null_kwargs);
-       Assert.assertEquals(testDate1.__year__(), new org.python.types.Str(""));
-       Assert.assertEquals(testDate2.__year__(), new org.python.types.Str("2020"));
+       Date testValidYear = new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+       Assert.assertEquals(testValidYear.__year__(), new org.python.types.Str("2020"));
+       
+       Date testEdgeCaseYear = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+       Assert.assertEquals(testEdgeCaseYear.__year__(), new org.python.types.Str("1"));
+       
+       Date testInvalidYear = new Date(new Object[] {Int.getInt(0), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+       Assert.assertEquals(testInvalidYear.__year__(), new org.python.types.Str("0"));
     }
 
     @Test
