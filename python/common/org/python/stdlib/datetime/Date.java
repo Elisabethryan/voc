@@ -58,7 +58,7 @@ public class Date extends org.python.types.Object {
 	    }
 
 	    if ((this.year instanceof org.python.types.Int) && (this.month instanceof org.python.types.Int) && (this.day instanceof org.python.types.Int)) {
-		if (1 <= ((org.python.types.Int) this.year).value && ((org.python.types.Int) this.year).value <= 999) {
+		if (1 <= ((org.python.types.Int) this.year).value && ((org.python.types.Int) this.year).value <= 9999) {
 
 		    if (1d <= ((org.python.types.Int) this.month).value && ((org.python.types.Int) this.month).value <= 12d) {
 			if (1d <= ((org.python.types.Int) this.day).value && ((org.python.types.Int) this.day).value <= 31d) {
@@ -269,7 +269,7 @@ public class Date extends org.python.types.Object {
 
     }
 
-    @org.python.Method(__doc__ = "")
+    @org.python.Method(__doc__ = "Returns if two Dates hold same values or is the same instance")
     public org.python.Object __eq__(org.python.Object obj) {
         if(obj instanceof Date) {
             var toCompare = (Date) obj;
@@ -281,6 +281,19 @@ public class Date extends org.python.types.Object {
             return Bool.TRUE;
         } 
         
+        return Bool.FALSE;
+    }
+
+    @org.python.Method(__doc__ = "Returns true if arg date is older than this")
+    public org.python.Object __lt__(org.python.Object obj) {
+        if(obj instanceof Date) {
+            var toCompare = (Date) obj;
+            if((this.year).toJava()) < ((toCompare.year).toJava()) {
+
+            }
+
+        }
+
         return Bool.FALSE;
     }
 }
