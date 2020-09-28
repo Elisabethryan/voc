@@ -122,12 +122,12 @@ public class TimeDelta extends org.python.types.Object {
 
     @org.python.Method()
     public org.python.Object __min__() {
-	return new org.python.types.Str("-999999 days, 0:00:00");
+	return new org.python.types.Str("-999999999 days, 0:00:00");
     }
 
     @org.python.Method()
     public org.python.Object __max__() {
-	return new org.python.types.Str("9999999 days, 23:59:59.999999");
+	return new org.python.types.Str("999999999 days, 23:59:59.999999");
     }
 
     @org.python.Method()
