@@ -384,7 +384,7 @@ public class DateTest {
         Assert.assertFalse(helpLeq(testDate2, testDate1));
 
         Assert.assertTrue(helpGeq(Date.__max__(), Date.__min__()));
-        Assert.assertFalse(helpGeq(Date.__min__(), Date.__min__()));
+        Assert.assertFalse(helpGeq(Date.__min__(), Date.__max__()));
     }
 
 
@@ -421,6 +421,6 @@ public class DateTest {
         Assert.assertFalse(helpLeq(testDate2, testDate1));
 
         Assert.assertTrue(helpGeq(Date.__max__(), Date.__min__()));
-        Assert.assertFalse(helpGeq(Date.__min__(), Date.__min__()));
+        Assert.assertFalse(helpGeq(Date.__min__(), Date.__max__()));
     }
 }
