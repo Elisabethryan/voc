@@ -152,16 +152,16 @@ public class DateTest {
        Assert.assertEquals(testEdgeCaseYear.__year__(), new org.python.types.Str("1"));
        
        // TODO: maybe should be moved to own method. Otherwise code above could pass if it throws ValueError even if it shouldn't.
-       Date testInvalidYear = new Date(new Object[] {Int.getInt(0), Int.getInt(1), Int.getInt(1)}, null_kwargs);
-       Assert.assertEquals(testInvalidYear.__year__(), new org.python.types.Str("0"));
+       new Date(new Object[] {Int.getInt(0), Int.getInt(1), Int.getInt(1)}, null_kwargs);
     }
 
-    @Test
+    @Test(expected = ValueError.class)
     public void testMonth() {
-       Date testDate1 = new Date(new Object[] {Int.getInt(0), Int.getInt(0), Int.getInt(0)}, null_kwargs);
-       Date testDate2 = new Date(new Object[] {Int.getInt(0), Int.getInt(9), Int.getInt(0)}, null_kwargs);
-       Assert.assertEquals(testDate1.__month__(), new org.python.types.Str(""));
-       Assert.assertEquals(testDate2.__month__(), new org.python.types.Str("2020"));
+       Date testDate = new Date(new Object[] {Int.getInt(2020), Int.getInt(9), Int.getInt(1)}, null_kwargs);
+       Assert.assertEquals(testDate.__month__(), new org.python.types.Str("9"));
+       
+       // TODO: maybe should be moved to own method. Otherwise code above could pass if it throws ValueError even if it shouldn't.
+       new Date(new Object[] {Int.getInt(2020), Int.getInt(0), Int.getInt(1)}, null_kwargs);
     }
 
     @Test
