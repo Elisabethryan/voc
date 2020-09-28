@@ -129,7 +129,7 @@ public class DateTest {
 
 
     @Test
-    public void test_repr() {
+    public void testRepr() {
        Date testDate1 = new Date(new Object[] {Int.getInt(1), Int.getInt(2), Int.getInt(3)}, null_kwargs); 
        Assert.assertEquals(testDate1.__repr__(), new org.python.types.Str("1-2-3"));
 
@@ -147,7 +147,7 @@ public class DateTest {
     }
 
     @Test
-    public void test_year() {
+    public void testYear() {
        Date testDate1 = new Date(new Object[] {Int.getInt(0), Int.getInt(0), Int.getInt(0)}, null_kwargs);
        Date testDate2 = new Date(new Object[] {Int.getInt(2020), Int.getInt(0), Int.getInt(0)}, null_kwargs);
        Assert.assertEquals(testDate1.__year__(), new org.python.types.Str(""));
@@ -155,7 +155,7 @@ public class DateTest {
     }
 
     @Test
-    public void test_month() {
+    public void testMonth() {
        Date testDate1 = new Date(new Object[] {Int.getInt(0), Int.getInt(0), Int.getInt(0)}, null_kwargs);
        Date testDate2 = new Date(new Object[] {Int.getInt(0), Int.getInt(9), Int.getInt(0)}, null_kwargs);
        Assert.assertEquals(testDate1.__month__(), new org.python.types.Str(""));
@@ -163,7 +163,7 @@ public class DateTest {
     }
 
     @Test
-    public void test_day() {
+    public void testDay() {
        Date testDate1 = new Date(new Object[] {Int.getInt(0), Int.getInt(0), Int.getInt(0)}, null_kwargs);
        Date testDate2 = new Date(new Object[] {Int.getInt(0), Int.getInt(0), Int.getInt(25)}, null_kwargs);
        Assert.assertEquals(testDate1.__day__(), new org.python.types.Str(""));
@@ -171,7 +171,7 @@ public class DateTest {
     }
 
     @Test
-    public void test_max() {
+    public void testMax() {
         Date testDate = (Date) Date.__max__();
         Assert.assertEquals(testDate.year, Int.getInt(9999));
         Assert.assertEquals(testDate.month, Int.getInt(12));
@@ -179,7 +179,7 @@ public class DateTest {
     }
 
     @Test
-    public void test_min() {
+    public void testMin() {
         Date testDate = (Date) Date.__min__();
         Assert.assertEquals(testDate.year, Int.getInt(1));
         Assert.assertEquals(testDate.month, Int.getInt(1));
@@ -188,7 +188,7 @@ public class DateTest {
 
 
     @Test
-    public void test_today() {
+    public void testToday() {
         Date dateTodayTest = new Date(new Object[] {Int.getInt(1), Int.getInt(2), Int.getInt(3)}, null_kwargs);
         Date date = (Date) dateTodayTest.today();
         java.time.LocalDateTime actualToday = java.time.LocalDateTime.now();
