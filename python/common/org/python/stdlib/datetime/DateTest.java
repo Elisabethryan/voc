@@ -223,4 +223,108 @@ public class DateTest {
         Date pythonTuesday = new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(7)}, null_kwargs);
         Assert.assertEquals(pythonTuesday.weekday().toJava(), (long)1);
     }
+
+
+   //helper function to make assert work
+    public java.lang.Boolean helpEq(org.python.Object obj1, org.python.Object obj2) {
+        return ((Bool) obj1.__eq__(obj2)).value;
+    }
+
+    @Test
+    public void test_eq() {
+
+        //Two instances of equivalent attribute values
+        Date testDate1 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+        Date testDate2 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+        Assert.assertTrue(helpEq(testDate1, testDate2));
+        Assert.assertTrue(helpEq(testDate2, testDate1));
+
+        //Test for inequal objects
+        testDate2 = new Date(new Object[] {Int.getInt(2), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+        Assert.assertFalse(helpEq(testDate1, testDate2));
+        testDate2 = new Date(new Object[] {Int.getInt(1), Int.getInt(2), Int.getInt(1)}, null_kwargs);
+        Assert.assertFalse(helpEq(testDate1, testDate2));
+        testDate2 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(2)}, null_kwargs);
+        Assert.assertFalse(helpEq(testDate1, testDate2));
+
+        //Test for same instance
+        Assert.assertTrue(helpEq(testDate1, testDate1));
+    }
+
+
+   //helper function to make assert work
+    public java.lang.Boolean helpLt(org.python.Object obj1, org.python.Object obj2) {
+        return ((Bool) obj1.__lt__(obj2)).value;
+    }
+
+    @Test
+    public void test_lt() {
+        Date testDate1 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+        Date testDate2 = new Date(new Object[] {Int.getInt(2), Int.getInt(2), Int.getInt(2)}, null_kwargs);
+        Assert.assertTrue(helpLt(testDate1, testDate2));
+        Assert.assertFalse(helpLt(testDate2, testDate1));
+
+        //Same Date yields fasle
+        Assert.assertFalse(helpLt(testDate1, testDate1));
+
+        //Bigger year value yields true
+        testDate1 = new Date(new Object[] {Int.getInt(3), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+        testDate2 = new Date(new Object[] {Int.getInt(1), Int.getInt(2), Int.getInt(2)}, null_kwargs);
+        Assert.assertTrue(helpLt(testDate1, testDate2));
+        Assert.assertFalse(helpLt(testDate2, testDate1));
+
+        //Bigger month value yields true
+        testDate1 = new Date(new Object[] {Int.getInt(1), Int.getInt(2), Int.getInt(1)}, null_kwargs);
+        testDate2 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+        Assert.assertTrue(helpLt(testDate1, testDate2));
+        Assert.assertFalse(helpLt(testDate2, testDate1));
+
+        //Bigger day value yields true
+        testDate1 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(2)}, null_kwargs);
+        testDate2 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+        Assert.assertTrue(helpLt(testDate1, testDate2));
+        Assert.assertFalse(helpLt(testDate2, testDate1));
+
+        Assert.assertTrue(helpLt(Date.__max__(), Date.__min__()));
+        Assert.assertFalse(helpLt(Date.__min__(), Date.__min__()));
+
+
+    }
+
+
+    public java.lang.Boolean helpLeq(org.python.Object obj1, org.python.Object obj2) {
+        return ((Bool) obj1.__le__(obj2)).value;
+    }
+
+    @Test
+    public void test_le() {
+        Date testDate1 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+        Date testDate2 = new Date(new Object[] {Int.getInt(2), Int.getInt(2), Int.getInt(2)}, null_kwargs);
+        Assert.assertTrue(helpLeq(testDate1, testDate2));
+        Assert.assertFalse(helpLeq(testDate2, testDate1));
+
+        //Same Date yields True
+        Assert.assertFalse(helpLeq(testDate1, testDate1));
+
+        //Bigger year value yields true
+        testDate1 = new Date(new Object[] {Int.getInt(3), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+        testDate2 = new Date(new Object[] {Int.getInt(1), Int.getInt(2), Int.getInt(2)}, null_kwargs);
+        Assert.assertTrue(helpLeq(testDate1, testDate2));
+        Assert.assertFalse(helpLeq(testDate2, testDate1));
+
+        //Bigger month value yields true
+        testDate1 = new Date(new Object[] {Int.getInt(1), Int.getInt(2), Int.getInt(1)}, null_kwargs);
+        testDate2 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+        Assert.assertTrue(helpLeq(testDate1, testDate2));
+        Assert.assertFalse(helpLeq(testDate2, testDate1));
+
+        //Bigger day value yields true
+        testDate1 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(2)}, null_kwargs);
+        testDate2 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+        Assert.assertTrue(helpLeq(testDate1, testDate2));
+        Assert.assertFalse(helpLeq(testDate2, testDate1));
+
+        Assert.assertTrue(helpLeq(Date.__max__(), Date.__min__()));
+        Assert.assertFalse(helpLeq(Date.__min__(), Date.__min__()));
+    }
 }
