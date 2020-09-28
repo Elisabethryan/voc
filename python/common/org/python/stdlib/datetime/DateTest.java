@@ -352,7 +352,7 @@ public class DateTest {
     }
 
     public java.lang.Boolean helpGeq(org.python.Object obj1, org.python.Object obj2) {
-        return ((Bool) obj1.__le__(obj2)).value;
+        return ((Bool) obj1.__ge__(obj2)).value;
     }
 
     @Test
@@ -389,7 +389,7 @@ public class DateTest {
 
 
     public java.lang.Boolean helpGt(org.python.Object obj1, org.python.Object obj2) {
-        return ((Bool) obj1.__le__(obj2)).value;
+        return ((Bool) obj1.__gt__(obj2)).value;
     }
 
     @Test
