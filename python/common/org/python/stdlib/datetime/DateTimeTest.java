@@ -3,6 +3,7 @@ package org.python.stdlib.datetime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +19,37 @@ import org.python.types.Int;
 
 class DateTimeTest {
 	
+	@Test 
+	void test_str() {
+		org.python.types.Int year = org.python.types.Int.getInt(1);
+		org.python.types.Int month = org.python.types.Int.getInt(2);
+		org.python.types.Int day = org.python.types.Int.getInt(3);
+
+		org.python.Object[] dateTimeArgs = { year, month, day };
+		DateTime dateTime = new DateTime(dateTimeArgs, Collections.emptyMap());
+		Assert.assertEquals(dateTime.__str__().toJava(), "0001-02-03 00:00:00");
+		
+		year = org.python.types.Int.getInt(1200);
+		month = org.python.types.Int.getInt(2);
+		day = org.python.types.Int.getInt(3);
+		org.python.types.Int hour = org.python.types.Int.getInt(9);
+		org.python.types.Int minute = org.python.types.Int.getInt(4);
+		org.python.types.Int second = org.python.types.Int.getInt(5);
+		org.python.types.Int mircrosecond = org.python.types.Int.getInt(1);
+		
+		Map<String, Object> kwargs = new HashMap<>();
+		kwargs.put("year", year);
+		kwargs.put("month", month);
+		kwargs.put("day", day);
+		kwargs.put("hour", hour);
+		kwargs.put("minute", minute);
+		kwargs.put("second", second);
+		kwargs.put("microsecond", mircrosecond);
+		
+		dateTime = new DateTime(new org.python.Object[] {}, kwargs);
+		Assert.assertEquals(dateTime.__str__().toJava(), "1200-02-03 09:04:05.000001");
+		
+	}
 	@Test
 	void test_date() {
 		org.python.types.Int dateTimeYear = org.python.types.Int.getInt(1);
@@ -33,6 +65,8 @@ class DateTimeTest {
 		org.python.types.Int dateDay = org.python.types.Int.getInt(3);
 
 		org.python.Object[] dateArgs = { dateYear, dateMonth, dateDay };
+		
+//		dunno if we should change Date.java but max year is 9999 instead of 999
 		Date date = new Date(dateArgs, Collections.emptyMap());
 		
 		Assert.assertEquals(dateTimeDate.year, date.year );
@@ -70,9 +104,9 @@ class DateTimeTest {
 		org.python.Object todaySecond=  dateTimeToday.second;
 		Assert.assertEquals(todaySecond.toJava(), (long) today.getSecond());
 		
-		long microSeconds = (long) (today.getNano() * 0.0010);
-		org.python.Object todayMicroSecond=  dateTimeToday.microsecond;
-		Assert.assertEquals(todayMicroSecond.toJava(), microSeconds);
+		long microSeconds = (long) Math.log10((long) (today.getNano() * 0.0010));
+		long todayMicroSecond=  (long)Math.log10( (double) ((long)dateTimeToday.microsecond.toJava()));
+		Assert.assertEquals(todayMicroSecond, microSeconds);
 		
 		
 	}
@@ -278,18 +312,125 @@ class DateTimeTest {
 	
 	@Test
 	void test_weekday() {
-			org.python.types.Int dateTimeYear = org.python.types.Int.getInt(1);
-			org.python.types.Int dateTimeMonth = org.python.types.Int.getInt(2);
-			org.python.types.Int dateTimeDay = org.python.types.Int.getInt(3);
-	
+
+			for(int i = 0; i < 7; i++) {
+				
+			org.python.types.Int dateTimeYear = org.python.types.Int.getInt(2020);
+			org.python.types.Int dateTimeMonth = org.python.types.Int.getInt(9);
+			org.python.types.Int dateTimeDay = org.python.types.Int.getInt(28 - i);
 			org.python.Object[] dateTimeArgs = { dateTimeYear, dateTimeMonth, dateTimeDay };
 			DateTime dateTime = new DateTime(dateTimeArgs, Collections.emptyMap());
 			
-			java.time.LocalDateTime today = java.time.LocalDateTime.now();
+			Calendar cal = Calendar.getInstance();	
+			cal.set(2020,9 - 1 ,28 - i);
+		  
+			int[] convertToPython = { 6, 0, 1, 2, 3, 4, 5 };
+			int javaWeekday =  cal.get(Calendar.DAY_OF_WEEK);    
 			org.python.Object weekday = dateTime.weekday();
-			//maybe test for other days then today?
-			Assert.assertEquals(weekday.toJava(), (long) today.getDayOfWeek().getValue() -1 );
+			Assert.assertEquals(weekday.toJava(), (long) convertToPython[javaWeekday - 1]);
+
+			}		
 	}
+	@Test 
+	void test_ctime(){
+		org.python.types.Int year = org.python.types.Int.getInt(2020);
+		org.python.types.Int month = org.python.types.Int.getInt(9);
+		org.python.types.Int day = org.python.types.Int.getInt(28);
+		org.python.types.Int hour = org.python.types.Int.getInt(9);
+		org.python.types.Int minute = org.python.types.Int.getInt(4);
+		org.python.types.Int second = org.python.types.Int.getInt(5);
+		
+		org.python.Object[] dateTimeArgs = { year, month, day, hour, minute, second };
+		DateTime dateTime = new DateTime(dateTimeArgs, Collections.emptyMap());
+		dateTime.ctime();		
+		Assert.assertEquals(dateTime.ctime().toJava(),"Mon Sep  28 09:04:05 2020");
+		
+		
+		
+		year = org.python.types.Int.getInt(1);
+		month = org.python.types.Int.getInt(11);
+		day = org.python.types.Int.getInt(4);
+		hour = org.python.types.Int.getInt(12);
+		minute = org.python.types.Int.getInt(43);
+		second = org.python.types.Int.getInt(55);
+		
+		org.python.Object[] dateTimeArgs2 = { year, month, day, hour, minute, second };
+		dateTime = new DateTime(dateTimeArgs2, Collections.emptyMap());
+		dateTime.ctime();
+		Assert.assertEquals(dateTime.ctime().toJava(),"Fri Nov  04 12:43:55 0001");
+		
+		
+		
+		year = org.python.types.Int.getInt(1);
+		month = org.python.types.Int.getInt(1);
+		day = org.python.types.Int.getInt(1);
+		hour = org.python.types.Int.getInt(0);
+		minute = org.python.types.Int.getInt(0);
+		second = org.python.types.Int.getInt(0);
+		
+		org.python.Object[] dateTimeArgs3 = { year, month, day, hour, minute, second };
+		dateTime = new DateTime(dateTimeArgs3, Collections.emptyMap());
+		dateTime.ctime();
+		Assert.assertEquals(dateTime.ctime().toJava(),"Sat Jan  01 00:00:00 0001");
+		
+		
+	}
+//	String input = "2012-22-01";
+//	String input = "2011-11-04T00:05:23.987";
+	@Test
+	void test_fromisoformat() {
+		DateTime dtIso = DateTime.fromisoformat(new org.python.types.Str("2012-12-01"));
+		
+		org.python.types.Int year = org.python.types.Int.getInt(2012);
+		org.python.types.Int month = org.python.types.Int.getInt(12);
+		org.python.types.Int day = org.python.types.Int.getInt(1);
+
+		org.python.Object[] dateTimeArgs = { year, month, day };
+		DateTime dateTime = new DateTime(dateTimeArgs, Collections.emptyMap());
+		
+		Assert.assertEquals(dtIso.year.toJava(), dateTime.year.toJava());
+		Assert.assertEquals(dtIso.month.toJava(), dateTime.month.toJava());
+		Assert.assertEquals(dtIso.day.toJava(), dateTime.day.toJava());
+		Assert.assertEquals(dtIso.hour.toJava(), dateTime.hour.toJava());
+		Assert.assertEquals(dtIso.minute.toJava(),dateTime.minute.toJava());
+		Assert.assertEquals(dtIso.second.toJava(), dateTime.second.toJava());
+		Assert.assertEquals(dtIso.microsecond.toJava(), dateTime.microsecond.toJava());
+
+	
+		dtIso = DateTime.fromisoformat(new org.python.types.Str("2011-11-04T00:05:23.987"));
+	
+		 year = org.python.types.Int.getInt(2011);
+		 month = org.python.types.Int.getInt(11);
+		 day = org.python.types.Int.getInt(4);
+		 org.python.types.Int hour = org.python.types.Int.getInt(0);
+		 org.python.types.Int minute = org.python.types.Int.getInt(5);
+		 org.python.types.Int second = org.python.types.Int.getInt(23);
+		 org.python.types.Int microsecond = org.python.types.Int.getInt(987000);
+		 
+		org.python.Object[] dateTimeArgs2 = { year, month, day, hour, minute, second, microsecond };
+		 dateTime = new DateTime(dateTimeArgs2, Collections.emptyMap());
+		
+		Assert.assertEquals(dtIso.year.toJava(), dateTime.year.toJava());
+		Assert.assertEquals(dtIso.month.toJava(), dateTime.month.toJava());
+		Assert.assertEquals(dtIso.day.toJava(), dateTime.day.toJava());
+		Assert.assertEquals(dtIso.hour.toJava(), dateTime.hour.toJava());
+		Assert.assertEquals(dtIso.minute.toJava(),dateTime.minute.toJava());
+		Assert.assertEquals(dtIso.second.toJava(), dateTime.second.toJava());
+		Assert.assertEquals(dtIso.microsecond.toJava(), dateTime.microsecond.toJava());
+	
+		
+		dtIso = DateTime.fromisoformat(new org.python.types.Str("2011-11-04 00:05:23.987"));
+		
+		Assert.assertEquals(dtIso.year.toJava(), dateTime.year.toJava());
+		Assert.assertEquals(dtIso.month.toJava(), dateTime.month.toJava());
+		Assert.assertEquals(dtIso.day.toJava(), dateTime.day.toJava());
+		Assert.assertEquals(dtIso.hour.toJava(), dateTime.hour.toJava());
+		Assert.assertEquals(dtIso.minute.toJava(),dateTime.minute.toJava());
+		Assert.assertEquals(dtIso.second.toJava(), dateTime.second.toJava());
+		Assert.assertEquals(dtIso.microsecond.toJava(), dateTime.microsecond.toJava());
+		
+	}
+	
 	
 	
 }

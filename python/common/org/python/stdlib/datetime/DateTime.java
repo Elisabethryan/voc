@@ -1,6 +1,9 @@
 package org.python.stdlib.datetime;
 
+import java.util.ArrayList;
 import java.util.Collections;
+
+import org.python.Object;
 
 public class DateTime extends org.python.types.Object {
 	private final int YEAR_INDEX = 0;
@@ -217,18 +220,174 @@ public class DateTime extends org.python.types.Object {
 		return new DateTime(args, Collections.emptyMap());
 	}
 
+//	@org.python.Method(__doc__ = "")
+//	public org.python.Object weekday() {
+//		double y = ((org.python.types.Int) this.year).value;
+//		double m = ((org.python.types.Int) this.month).value;
+//		double d = ((org.python.types.Int) this.day).value;
+//
+//		java.util.Date myCalendar = new java.util.GregorianCalendar((int) y, (int) m - 1 , (int) d).getTime();
+//		java.util.Calendar c = java.util.Calendar.getInstance();
+//		c.setTime(myCalendar);
+//		int day = c.get(java.util.Calendar.DAY_OF_WEEK);
+//		
+//		if(day > 6) {
+//			day = 7 - day;
+//		}
+//		int[] convertToPython = { 5, 6, 0, 1, 2, 3, 4 };
+//
+//		return org.python.types.Int.getInt(convertToPython[day]);
+//
+//	}
+	
 	@org.python.Method(__doc__ = "")
-	public org.python.Object weekday() {
-		double y = ((org.python.types.Int) this.year).value;
-		double m = ((org.python.types.Int) this.month).value;
-		double d = ((org.python.types.Int) this.day).value;
+    public org.python.Object weekday() {
+	double y = ((org.python.types.Int) this.year).value;
+	double m = ((org.python.types.Int) this.month).value;
+	double d = ((org.python.types.Int) this.day).value;
 
-		java.util.Date myCalendar = new java.util.GregorianCalendar((int) y, (int) m - 1, (int) d).getTime();
-		java.util.Calendar c = java.util.Calendar.getInstance();
-		c.setTime(myCalendar);
-		int day = c.get(java.util.Calendar.DAY_OF_WEEK);
-		int[] convertToPython = { 6, 0, 1, 2, 3, 4, 5 };
-		return org.python.types.Int.getInt(convertToPython[day - 1]);
+	java.util.Date myCalendar = new java.util.GregorianCalendar((int) y, (int) m - 1, (int) d).getTime();
+	java.util.Calendar c = java.util.Calendar.getInstance();
+	c.setTime(myCalendar);
+	int day = c.get(java.util.Calendar.DAY_OF_WEEK);
+	int[] convertToPython = { 6, 0, 1, 2, 3, 4, 5 };
+	return org.python.types.Int.getInt(convertToPython[day - 1]);
 
+    }
+	
+	@org.python.Method(__doc__ = "")
+	public org.python.Object ctime(){
+		
+		String [] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+		String [] weekdays = { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
+		
+		long weekdayNumber = (long) this.weekday().toJava();
+		String weekdayString = weekdays[(int) weekdayNumber];
+		
+		long monthNumber = (long) this.month.toJava();
+		String monthString = months[(int) monthNumber - 1];
+		
+		String year = Long.toString(this.timeUnits[YEAR_INDEX]);
+		while (year.length() < 4)
+			year = "0" + year;
+
+		String month = Long.toString(this.timeUnits[MONTH_INDEX]);
+		while (month.length() < 2)
+			month = "0" + month;
+
+		String day = Long.toString(this.timeUnits[DAY_INDEX]);
+		while (day.length() < 2)
+			day = "0" + day;
+
+		String hour = this.timeUnits[HOUR_INDEX] != 0 ? Long.toString(this.timeUnits[HOUR_INDEX]) : "00";
+		while (hour.length() < 2)
+			hour = "0" + hour;
+
+		String minute = this.timeUnits[MINUTE_INDEX] != 0 ? Long.toString(this.timeUnits[MINUTE_INDEX]) : "00";
+		while (minute.length() < 2)
+			minute = "0" + minute;
+
+		String second = this.timeUnits[SECOND_INDEX] != 0 ? Long.toString(this.timeUnits[SECOND_INDEX]) : "00";
+		while (second.length() < 2)
+			second = "0" + second;
+		
+		
+		String returnStr = weekdayString + " " + monthString +  "  " + day + " " + hour +  ":" + minute + ":" +  second + " " +  year;
+		return new org.python.types.Str(returnStr);
+		
 	}
+	
+	public static DateTime fromisoformat(org.python.Object isoString){
+		String input = (String) isoString.toJava();
+		if(input.indexOf("+") != -1){
+			throw new org.python.exceptions.NotImplementedError("Timezones has not been implemented");
+		}
+
+		
+		
+		int index = input.indexOf("-");		
+		String year = input.substring(0, index);
+		input = input.substring(index + 1, input.length());
+		
+		index = input.indexOf("-");
+		String month = input.substring(0, index);
+		input = input.substring(month.length()+ 1, input.length());
+		
+		System.out.println(input);
+		String day = input.substring(0,2); 
+		input = input.substring(2, input.length());
+		String hour = "";
+		if(input.length() > 0 && (input.charAt(0) == 'T' || input.charAt(0) == ' ')) {
+			hour = input.substring(1, 3);
+			
+		}
+		String minute = "";
+		if(input.length() > 5) {
+			input = input.substring(3, input.length());
+			minute = input.substring(1, 3);
+		}
+		String second = "";
+		if(input.length() > 5) {
+			input = input.substring(3, input.length());
+			second = input.substring(1, 3);
+		}
+		String microsecond = "";
+		if(input.length() > 5) {
+			input = input.substring(3, input.length());
+			microsecond = input.substring(1, input.length());
+			int numberOfZerosToAdd = 6 - microsecond.length();	
+			for(int i= 0; i < numberOfZerosToAdd; i++){
+				microsecond += "0";
+			}
+		}
+		
+		ArrayList<org.python.types.Int> dateTime = new ArrayList<org.python.types.Int>();
+		
+		int year_i = Integer.parseInt(year);
+		int month_i = Integer.parseInt(month);
+		int day_i = Integer.parseInt(day);
+		
+		dateTime.add(org.python.types.Int.getInt(year_i));
+		dateTime.add(org.python.types.Int.getInt(month_i));
+		dateTime.add(org.python.types.Int.getInt(day_i));
+		
+		Integer hour_i = null;
+		if(!hour.equals("")) {
+			hour_i =Integer.parseInt(hour);
+			dateTime.add(org.python.types.Int.getInt(hour_i));
+		}
+		Integer minute_i = null;
+		if(!minute.equals("")) {
+			minute_i = Integer.parseInt(minute);
+			dateTime.add(org.python.types.Int.getInt(minute_i));
+		}
+		Integer second_i = null;
+		if(!second.equals("")) {
+			second_i = Integer.parseInt(second);
+			dateTime.add(org.python.types.Int.getInt(second_i));
+		}
+		
+		Integer microsecond_i = null;
+		if(!microsecond.equals("")) { 
+			microsecond_i = Integer.parseInt(microsecond);
+			dateTime.add(org.python.types.Int.getInt(microsecond_i));
+		}
+		
+
+		org.python.Object[] args = new org.python.Object[dateTime.size()];
+		for(int i = 0; i < dateTime.size(); i++) {
+			args[i] = dateTime.get(i);
+		}
+		return new DateTime(args, Collections.emptyMap());
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
