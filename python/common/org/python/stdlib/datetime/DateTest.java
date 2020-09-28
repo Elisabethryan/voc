@@ -202,7 +202,7 @@ public class DateTest {
     @Test
     public void testCtime() {
         Date testDate = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
-        Assert.assertEquals(testDate.ctime(), new org.python.types.Str("Mon Jan 1 00:00:00 1"));
+        Assert.assertEquals(testDate.ctime(), new org.python.types.Str("Sat Jan 1 00:00:00 1"));
     }
 
     @Test
