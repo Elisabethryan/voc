@@ -41,7 +41,7 @@ public class TimeDelta extends org.python.types.Object {
 	    for (java.lang.String key : kwargs.keySet()) {
 		correct = allowedList.contains(key);
 		if (!correct) {
-		    throw new org.python.exceptions.TypeError(key + " is an invalid keuword argument for this function");
+		    throw new org.python.exceptions.TypeError(key + " is an invalid keyword argument for this function");
 
 		}
 	    }
@@ -133,6 +133,46 @@ public class TimeDelta extends org.python.types.Object {
     @org.python.Method()
     public org.python.Object __resolution__() {
 	return new org.python.types.Str("0:00:00.000001");
+    }
+    
+    @org.python.Method()
+    public boolean __comparison__(TimeDelta td_comparison) {
+    String sum_seconds_obj = ((org.python.types.Str) this.total_seconds()).value;    
+    long microseconds_obj = (((org.python.types.Int) this.microseconds).value);  
+    String sum_seconds_comp = ((org.python.types.Str) td_comparison.total_seconds()).value; 
+    long microseconds_comp = (((org.python.types.Int) td_comparison.microseconds).value);
+    
+    return ((sum_seconds_obj.equals(sum_seconds_comp)) && (microseconds_obj == microseconds_comp));
+    }
+    
+    @org.python.Method()
+    public TimeDelta __division__(long divider) {   
+    long microseconds = (((org.python.types.Int) this.microseconds).value);  
+    long seconds = (((org.python.types.Int) this.seconds).value); 
+    long days = (((org.python.types.Int) this.days).value); 
+    
+    org.python.types.Int divided_days = (org.python.types.Int) (org.python.types.Int.getInt(days/divider));
+    org.python.types.Int divided_seconds = (org.python.types.Int) (org.python.types.Int.getInt(seconds/divider));
+    org.python.types.Int divided_microseconds = (org.python.types.Int) (org.python.types.Int.getInt(microseconds/divider));
+    
+    org.python.Object[] args = {divided_days, divided_seconds, divided_microseconds};
+    TimeDelta result = new TimeDelta(args, Collections.EMPTY_MAP);
+    return result;
+    }
+    
+    @org.python.Method()
+    public TimeDelta __multiplication__(long quota) {   
+    long microseconds = (((org.python.types.Int) this.microseconds).value);  
+    long seconds = (((org.python.types.Int) this.seconds).value); 
+    long days = (((org.python.types.Int) this.days).value); 
+    
+    org.python.types.Int divided_days = (org.python.types.Int) (org.python.types.Int.getInt(days*quota));
+    org.python.types.Int divided_seconds = (org.python.types.Int) (org.python.types.Int.getInt(seconds*quota));
+    org.python.types.Int divided_microseconds = (org.python.types.Int) (org.python.types.Int.getInt(microseconds*quota));
+    
+    org.python.Object[] args = {divided_days, divided_seconds, divided_microseconds};
+    TimeDelta result = new TimeDelta(args, Collections.EMPTY_MAP);
+    return result;
     }
 
     @org.python.Method()
