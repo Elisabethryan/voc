@@ -272,37 +272,37 @@ public class DateTest {
     }
 
     @Test
-    public void test_lt() {
+    public void testLt() {
         Date testDate1 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
         Date testDate2 = new Date(new Object[] {Int.getInt(2), Int.getInt(2), Int.getInt(2)}, null_kwargs);
         Assert.assertTrue(helpLt(testDate1, testDate2));
         Assert.assertFalse(helpLt(testDate2, testDate1));
 
-        //Same Date yields fasle
+        //Same Date yields false
         Assert.assertFalse(helpLt(testDate1, testDate1));
 
         //Bigger year value yields true
         testDate1 = new Date(new Object[] {Int.getInt(3), Int.getInt(1), Int.getInt(1)}, null_kwargs);
         testDate2 = new Date(new Object[] {Int.getInt(1), Int.getInt(2), Int.getInt(2)}, null_kwargs);
-        Assert.assertTrue(helpLt(testDate1, testDate2));
-        Assert.assertFalse(helpLt(testDate2, testDate1));
+        Assert.assertFalse(helpLt(testDate1, testDate2));
+        Assert.assertTrue(helpLt(testDate2, testDate1));
 
         //Bigger month value yields true
         testDate1 = new Date(new Object[] {Int.getInt(1), Int.getInt(2), Int.getInt(1)}, null_kwargs);
         testDate2 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
-        Assert.assertTrue(helpLt(testDate1, testDate2));
-        Assert.assertFalse(helpLt(testDate2, testDate1));
+        Assert.assertFalse(helpLt(testDate1, testDate2));
+        Assert.assertTrue(helpLt(testDate2, testDate1));
 
         //Bigger day value yields true
         testDate1 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(2)}, null_kwargs);
         testDate2 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
-        Assert.assertTrue(helpLt(testDate1, testDate2));
-        Assert.assertFalse(helpLt(testDate2, testDate1));
+        Assert.assertFalse(helpLt(testDate1, testDate2));
+        Assert.assertTrue(helpLt(testDate2, testDate1));
 
-        Assert.assertTrue(helpLt(Date.__max__(), Date.__min__()));
+        Assert.assertTrue(helpLt(Date.__min__(), Date.__max__()));
+        Assert.assertFalse(helpLt(Date.__max__(), Date.__min__()));        
+        Assert.assertFalse(helpLt(Date.__max__(), Date.__max__()));
         Assert.assertFalse(helpLt(Date.__min__(), Date.__min__()));
-
-
     }
 
 

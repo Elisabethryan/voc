@@ -287,13 +287,30 @@ public class Date extends org.python.types.Object {
     @org.python.Method(__doc__ = "Returns true if arg date is older than this")
     public org.python.Object __lt__(org.python.Object obj) {
         if(obj instanceof Date) {
-            /*var toCompare = (Date) obj;
-            if((this.year).toJava()) < ((toCompare.year).toJava()) {
->>>>>>> 2b80d067a250f162680d0f9410775bb79107516e
+        	Date date = (Date)obj;
+        	
+        	double thisYear = ((org.python.types.Int) this.year).value;
+        	double thisMonth = ((org.python.types.Int) this.month).value;
+        	double thisDay = ((org.python.types.Int) this.day).value;
+        	
+        	double thatYear = ((org.python.types.Int) date.year).value;
+        	double thatMonth = ((org.python.types.Int) date.month).value;
+        	double thatDay = ((org.python.types.Int) date.day).value;
 
-            }*/
-
+        	
+        	if (thisYear < thatYear) {
+        		return Bool.TRUE;
+        	} else if (thisYear == thatYear) {
+        		if (thisMonth < thatMonth) {
+        			return Bool.TRUE;
+        		} else if (thisMonth == thatMonth){
+        			if (thisDay < thatDay) {
+        				return Bool.TRUE;
+        			}
+        		}
+        	}
         }
+        
         if(this == obj) {
             return Bool.FALSE; 
         }
