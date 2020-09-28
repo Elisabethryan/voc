@@ -284,6 +284,30 @@ public class Date extends org.python.types.Object {
         return Bool.FALSE;
     }
 
+    @org.python.Method(__doc__ = "Returns if two Dates doesn't hold the same values or is not the same instance")
+    public org.python.Object __neq__(org.python.Object obj) {
+        if(obj instanceof Date) {
+        	Date date = (Date)obj;
+        	
+        	double thisYear = ((org.python.types.Int) this.year).value;
+        	double thisMonth = ((org.python.types.Int) this.month).value;
+        	double thisDay = ((org.python.types.Int) this.day).value;
+        	
+        	double thatYear = ((org.python.types.Int) date.year).value;
+        	double thatMonth = ((org.python.types.Int) date.month).value;
+        	double thatDay = ((org.python.types.Int) date.day).value;
+        	
+        	return Bool.getBool(thisYear != thatYear || thisMonth != thatMonth || thisDay != thatDay);
+        }
+        
+        if(this != obj) {
+            return Bool.TRUE;
+        } 
+        
+        return Bool.FALSE;
+    }
+    
+
     @org.python.Method(__doc__ = "Returns true if arg date is older than this")
     public org.python.Object __lt__(org.python.Object obj) {
         if(obj instanceof Date) {
@@ -317,7 +341,92 @@ public class Date extends org.python.types.Object {
 
         return Bool.FALSE;
     }
+
+
+    @org.python.Method(__doc__ = "Returns true if...")
+    public org.python.Object __le__(org.python.Object obj) {
+    	if ((boolean) this.__lt__((obj)).toJava()) {
+    		return Bool.TRUE;
+    	}
+    	
+    	if ((boolean)this.__eq__((obj)).toJava()) {
+    		return Bool.TRUE;
+    	}
+    	
+    	return Bool.FALSE;
+    }
     
+    @org.python.Method(__doc__ = "Returns true if arg date is newer or equal to this")
+    
+    public org.python.Object __ge__(org.python.Object obj) {
+        if(obj instanceof Date) {
+        	Date date = (Date)obj;
+        	
+        	double thisYear = ((org.python.types.Int) this.year).value;
+        	double thisMonth = ((org.python.types.Int) this.month).value;
+        	double thisDay = ((org.python.types.Int) this.day).value;
+        	
+        	double thatYear = ((org.python.types.Int) date.year).value;
+        	double thatMonth = ((org.python.types.Int) date.month).value;
+        	double thatDay = ((org.python.types.Int) date.day).value;
+
+        	
+        	if (thisYear >= thatYear) {
+        		return Bool.TRUE;
+        	} else if (thisYear == thatYear) {
+        		if (thisMonth >= thatMonth) {
+        			return Bool.TRUE;
+        		} else if (thisMonth == thatMonth){
+        			if (thisDay >= thatDay) {
+        				return Bool.TRUE;
+        			}
+        		}
+        	}
+        }
+        
+        if(this == obj) {
+            return Bool.FALSE; 
+        }
+
+        return Bool.FALSE;
+    }
+
+    @org.python.Method(__doc__ = "Returns true if arg date is newer or equal to this")
+    
+    public org.python.Object __gt__(org.python.Object obj) {
+        if(obj instanceof Date) {
+        	Date date = (Date)obj;
+        	
+        	double thisYear = ((org.python.types.Int) this.year).value;
+        	double thisMonth = ((org.python.types.Int) this.month).value;
+        	double thisDay = ((org.python.types.Int) this.day).value;
+        	
+        	double thatYear = ((org.python.types.Int) date.year).value;
+        	double thatMonth = ((org.python.types.Int) date.month).value;
+        	double thatDay = ((org.python.types.Int) date.day).value;
+
+        	
+        	if (thisYear > thatYear) {
+        		return Bool.TRUE;
+        	} else if (thisYear == thatYear) {
+        		if (thisMonth > thatMonth) {
+        			return Bool.TRUE;
+        		} else if (thisMonth == thatMonth){
+        			if (thisDay > thatDay) {
+        				return Bool.TRUE;
+        			}
+        		}
+        	}
+        }
+        
+        if(this == obj) {
+            return Bool.FALSE; 
+        }
+
+        return Bool.FALSE;
+    }
+
+
     @org.python.Method(__doc__ = "Return the day of the week as an integer, where Monday is 1 and Sunday is 7.")
     public org.python.Object isoweekday(){
     	double y = ((org.python.types.Int) this.year).value;
