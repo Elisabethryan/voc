@@ -191,17 +191,12 @@ public class DateTest {
 
     @Test
     public void testToday() {
-        Date dateTodayTest = new Date(new Object[] {Int.getInt(1), Int.getInt(2), Int.getInt(3)}, null_kwargs);
-        Date date = (Date) dateTodayTest.today();
-        java.time.LocalDateTime actualToday = java.time.LocalDateTime.now();
-        //may need some toJavas here
-        org.python.Object yearNow = date.year;
-        Assert.assertEquals(yearNow, (long) actualToday.getYear());
-        org.python.Object monthNow = date.month;
-        Assert.assertEquals(monthNow, (long) actualToday.getMonth().getValue());
-        org.python.Object dayNow = date.day;
-        Assert.assertEquals(dayNow, (long) actualToday.getDayOfMonth());
+        Date pythonToday = (Date) Date.today();
+        java.time.LocalDateTime javaToday = java.time.LocalDateTime.now();
         
+        Assert.assertEquals(pythonToday.year.toJava(), (long) javaToday.getYear());
+        Assert.assertEquals(pythonToday.month.toJava(), (long) javaToday.getMonth().getValue());
+        Assert.assertEquals(pythonToday.day.toJava(), (long) javaToday.getDayOfMonth());
     }
 
     @Test
