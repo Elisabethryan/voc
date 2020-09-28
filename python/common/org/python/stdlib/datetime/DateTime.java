@@ -1,9 +1,11 @@
 package org.python.stdlib.datetime;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-
 import org.python.Object;
+import org.python.types.Bool;
+import org.python.types.NotImplementedType;
 
 public class DateTime extends org.python.types.Object {
 	private final int YEAR_INDEX = 0;
@@ -220,26 +222,6 @@ public class DateTime extends org.python.types.Object {
 		return new DateTime(args, Collections.emptyMap());
 	}
 
-//	@org.python.Method(__doc__ = "")
-//	public org.python.Object weekday() {
-//		double y = ((org.python.types.Int) this.year).value;
-//		double m = ((org.python.types.Int) this.month).value;
-//		double d = ((org.python.types.Int) this.day).value;
-//
-//		java.util.Date myCalendar = new java.util.GregorianCalendar((int) y, (int) m - 1 , (int) d).getTime();
-//		java.util.Calendar c = java.util.Calendar.getInstance();
-//		c.setTime(myCalendar);
-//		int day = c.get(java.util.Calendar.DAY_OF_WEEK);
-//		
-//		if(day > 6) {
-//			day = 7 - day;
-//		}
-//		int[] convertToPython = { 5, 6, 0, 1, 2, 3, 4 };
-//
-//		return org.python.types.Int.getInt(convertToPython[day]);
-//
-//	}
-	
 	@org.python.Method(__doc__ = "")
     public org.python.Object weekday() {
 	double y = ((org.python.types.Int) this.year).value;
@@ -381,13 +363,98 @@ public class DateTime extends org.python.types.Object {
 		return new DateTime(args, Collections.emptyMap());
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	public org.python.Object __eq__(org.python.Object other) {
+		if (this == other) {
+			return Bool.TRUE;
+		} else if (other instanceof DateTime) {
+			var that = (DateTime) other;
+			return Bool.getBool(Arrays.equals(this.timeUnits, that.timeUnits));
+		}
+
+		return NotImplementedType.NOT_IMPLEMENTED;
+	}
+
+	public org.python.Object __ne__(org.python.Object other) {
+		if (this == other) {
+			return Bool.FALSE;
+		} else if (other instanceof DateTime) {
+			var that = (DateTime) other;
+			return Bool.getBool(!Arrays.equals(this.timeUnits, that.timeUnits));
+		}
+
+		return NotImplementedType.NOT_IMPLEMENTED;
+	}
+
+	public org.python.Object __lt__(org.python.Object other) {
+		if (this == other) {
+			return Bool.FALSE;
+		} else if (other instanceof DateTime) {
+			var that = (DateTime) other;
+
+			for (int i = 0; i < timeUnits.length; i++) {
+				if (this.timeUnits[i] < that.timeUnits[i])
+					return Bool.TRUE;
+				else if (this.timeUnits[i] > that.timeUnits[i])
+					return Bool.FALSE;
+			}
+
+			return Bool.FALSE;
+		}
+
+		return NotImplementedType.NOT_IMPLEMENTED;
+	}
+
+	public org.python.Object __le__(org.python.Object other) {
+		if (this == other) {
+			return Bool.TRUE;
+		} else if (other instanceof DateTime) {
+			var that = (DateTime) other;
+
+			for (int i = 0; i < timeUnits.length; i++) {
+				if (this.timeUnits[i] > that.timeUnits[i])
+					return Bool.FALSE;
+			}
+
+			return Bool.TRUE;
+		}
+
+		return NotImplementedType.NOT_IMPLEMENTED;
+	}
+
+	public org.python.Object __gt__(org.python.Object other) {
+		if (this == other) {
+			return Bool.FALSE;
+		} else if (other instanceof DateTime) {
+			var that = (DateTime) other;
+
+			for (int i = 0; i < timeUnits.length; i++) {
+				if (this.timeUnits[i] < that.timeUnits[i])
+					return Bool.FALSE;
+				else if (this.timeUnits[i] > that.timeUnits[i])
+					return Bool.TRUE;
+			}
+
+			return Bool.FALSE;
+		}
+
+		return NotImplementedType.NOT_IMPLEMENTED;
+	}
+
+	public org.python.Object __ge__(org.python.Object other) {
+		if (this == other) {
+			return Bool.TRUE;
+		} else if (other instanceof DateTime) {
+			var that = (DateTime) other;
+
+			for (int i = 0; i < timeUnits.length; i++) {
+				if (this.timeUnits[i] < that.timeUnits[i])
+					return Bool.FALSE;
+			}
+
+			return Bool.TRUE;
+		}
+
+		return NotImplementedType.NOT_IMPLEMENTED;
+	}
 }

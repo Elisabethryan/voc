@@ -7,10 +7,15 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.python.Object;
+import org.python.exceptions.SyntaxError;
+import org.python.exceptions.TypeError;
+import org.python.exceptions.ValueError;
+import org.python.types.Bool;
 import org.python.types.Int;
 // Constructor test? (Different tests at creating DateTime object)
 // Attribute tests? (Check that they are set correctly)
@@ -85,7 +90,7 @@ class DateTimeTest {
 		DateTime dateTimeToday = (DateTime) dateTime.today();
 		
 		java.time.LocalDateTime today = java.time.LocalDateTime.now();
-				
+		
 		org.python.Object todayYear =  dateTimeToday.year;
 		Assert.assertEquals(todayYear.toJava(), (long) today.getYear());
 		
@@ -110,6 +115,72 @@ class DateTimeTest {
 		
 		
 	}
+
+
+	@Test
+	void test_exceptions() {
+		Map<String, Object> empty_kwargs = Collections.emptyMap();
+
+		Assert.assertThrows(TypeError.class, () -> {
+			new DateTime(new Object[] {}, empty_kwargs);
+		});
+
+		Assert.assertThrows(TypeError.class, () -> {
+			new DateTime(new Object[] { Int.getInt(2000) }, empty_kwargs);
+		});
+
+		Assert.assertThrows(TypeError.class, () -> {
+			Map<String, Object> kwargs = new HashMap<>();
+			kwargs.put("year", Int.getInt(2000));
+			new DateTime(new Object[] {}, kwargs);
+		});
+
+		Assert.assertThrows(SyntaxError.class, () -> {
+			Map<String, Object> kwargs = new HashMap<>();
+			kwargs.put("year", Int.getInt(2000));
+			kwargs.put("month", Int.getInt(6));
+			kwargs.put("day", Int.getInt(6));
+			new DateTime(new Object[] { Int.getInt(5) }, kwargs);
+		});
+
+		Assert.assertThrows(ValueError.class, () -> {
+			new DateTime(new Object[] { Int.getInt(-10), Int.getInt(6), Int.getInt(6) }, empty_kwargs);
+		});
+
+		Assert.assertThrows(ValueError.class, () -> {
+			new DateTime(new Object[] { Int.getInt(10), Int.getInt(-6), Int.getInt(6) }, empty_kwargs);
+		});
+
+		Assert.assertThrows(ValueError.class, () -> {
+			new DateTime(new Object[] { Int.getInt(10), Int.getInt(6), Int.getInt(-6) }, empty_kwargs);
+		});
+
+		Assert.assertThrows(ValueError.class, () -> {
+			Map<String, Object> kwargs = new HashMap<>();
+			kwargs.put("hour", Int.getInt(25));
+			new DateTime(new Object[] { Int.getInt(1779), Int.getInt(7), Int.getInt(4) }, kwargs);
+		});
+
+		Assert.assertThrows(ValueError.class, () -> {
+			Map<String, Object> kwargs = new HashMap<>();
+			kwargs.put("minute", Int.getInt(62));
+			new DateTime(new Object[] { Int.getInt(1779), Int.getInt(7), Int.getInt(4) }, kwargs);
+		});
+
+		Assert.assertThrows(ValueError.class, () -> {
+			Map<String, Object> kwargs = new HashMap<>();
+			kwargs.put("second", Int.getInt(404));
+			new DateTime(new Object[] { Int.getInt(1779), Int.getInt(7), Int.getInt(4) }, kwargs);
+		});
+
+		Assert.assertThrows(ValueError.class, () -> {
+			Map<String, Object> kwargs = new HashMap<>();
+			kwargs.put("microsecond", Int.getInt(-1));
+			new DateTime(new Object[] { Int.getInt(1779), Int.getInt(7), Int.getInt(4) }, kwargs);
+		});
+	}
+
+
 
 
 	@Test
@@ -432,7 +503,215 @@ class DateTimeTest {
 	}
 	
 	
-	
+	@Test
+	void test_eq() {
+		BiFunction<org.python.Object, org.python.Object, java.lang.Boolean> eq = (lhs, rhs) -> {
+			return ((Bool) lhs.__eq__(rhs)).value;
+		};
+
+		var a = new DateTime(new org.python.Object[] { Int.getInt(5555), Int.getInt(5), Int.getInt(5), Int.getInt(5),
+				Int.getInt(5), Int.getInt(5), Int.getInt(555555) }, Collections.emptyMap());
+
+		var b = new DateTime(new org.python.Object[] { Int.getInt(6666), Int.getInt(6), Int.getInt(6), Int.getInt(6),
+				Int.getInt(6), Int.getInt(6), Int.getInt(666666) }, Collections.emptyMap());
+
+		Assert.assertFalse(eq.apply(a, b));
+		Assert.assertFalse(eq.apply(b, a));
+
+		var equal1 = new DateTime(new org.python.Object[] { Int.getInt(1234), Int.getInt(5), Int.getInt(6),
+				Int.getInt(7), Int.getInt(8), Int.getInt(9), Int.getInt(101112) }, Collections.emptyMap());
+		var equal2 = new DateTime(new org.python.Object[] { equal1.year, equal1.month, equal1.day, equal1.hour,
+				equal1.minute, equal1.second, equal1.microsecond }, Collections.emptyMap());
+
+		Assert.assertTrue(eq.apply(equal1, equal2));
+		Assert.assertTrue(eq.apply(equal2, equal1));
+
+		var identical = new DateTime(new org.python.Object[] { Int.getInt(9), Int.getInt(8), Int.getInt(7),
+				Int.getInt(6), Int.getInt(5), Int.getInt(4), Int.getInt(3210) }, Collections.emptyMap());
+
+		Assert.assertTrue(eq.apply(identical, identical));
+	}
+
+	@Test
+	void test_ne() {
+		BiFunction<org.python.Object, org.python.Object, java.lang.Boolean> ne = (lhs, rhs) -> {
+			return ((Bool) lhs.__ne__(rhs)).value;
+		};
+
+		var a = new DateTime(new org.python.Object[] { Int.getInt(5555), Int.getInt(5), Int.getInt(5), Int.getInt(5),
+				Int.getInt(5), Int.getInt(5), Int.getInt(555555) }, Collections.emptyMap());
+
+		var b = new DateTime(new org.python.Object[] { Int.getInt(6666), Int.getInt(6), Int.getInt(6), Int.getInt(6),
+				Int.getInt(6), Int.getInt(6), Int.getInt(666666) }, Collections.emptyMap());
+
+		Assert.assertTrue(ne.apply(a, b));
+		Assert.assertTrue(ne.apply(b, a));
+
+		var equal1 = new DateTime(new org.python.Object[] { Int.getInt(1234), Int.getInt(5), Int.getInt(6),
+				Int.getInt(7), Int.getInt(8), Int.getInt(9), Int.getInt(101112) }, Collections.emptyMap());
+		var equal2 = new DateTime(new org.python.Object[] { equal1.year, equal1.month, equal1.day, equal1.hour,
+				equal1.minute, equal1.second, equal1.microsecond }, Collections.emptyMap());
+
+		Assert.assertFalse(ne.apply(equal1, equal2));
+		Assert.assertFalse(ne.apply(equal2, equal1));
+
+		var identical = new DateTime(new org.python.Object[] { Int.getInt(9), Int.getInt(8), Int.getInt(7),
+				Int.getInt(6), Int.getInt(5), Int.getInt(4), Int.getInt(3210) }, Collections.emptyMap());
+
+		Assert.assertFalse(ne.apply(identical, identical));
+	}
+
+	@Test
+	void test_lt() {
+		BiFunction<org.python.Object, org.python.Object, java.lang.Boolean> lt = (lhs, rhs) -> {
+			return ((Bool) lhs.__lt__(rhs)).value;
+		};
+
+		Assert.assertTrue(lt.apply(DateTime.__min__(), DateTime.__max__()));
+		Assert.assertFalse(lt.apply(DateTime.__max__(), DateTime.__min__()));
+
+		var a = new DateTime(new org.python.Object[] { Int.getInt(1111), Int.getInt(2), Int.getInt(9), Int.getInt(0),
+				Int.getInt(0), Int.getInt(0), Int.getInt(0) }, Collections.emptyMap());
+		var b = new DateTime(new org.python.Object[] { Int.getInt(1111), Int.getInt(2), Int.getInt(9), Int.getInt(0),
+				Int.getInt(0), Int.getInt(0), Int.getInt(1) }, Collections.emptyMap());
+
+		Assert.assertTrue(lt.apply(a, b));
+		Assert.assertFalse(lt.apply(b, a));
+
+		a = new DateTime(new org.python.Object[] { Int.getInt(1), Int.getInt(1), Int.getInt(1), Int.getInt(1),
+				Int.getInt(1), Int.getInt(1) }, Collections.emptyMap());
+		b = new DateTime(new org.python.Object[] { Int.getInt(2), Int.getInt(1), Int.getInt(1), Int.getInt(1),
+				Int.getInt(1), Int.getInt(1) }, Collections.emptyMap());
+
+		Assert.assertTrue(lt.apply(a, b));
+		Assert.assertFalse(lt.apply(b, a));
+
+		var equal1 = new DateTime(new org.python.Object[] { Int.getInt(1234), Int.getInt(5), Int.getInt(6),
+				Int.getInt(7), Int.getInt(8), Int.getInt(9), Int.getInt(101112) }, Collections.emptyMap());
+		var equal2 = new DateTime(new org.python.Object[] { equal1.year, equal1.month, equal1.day, equal1.hour,
+				equal1.minute, equal1.second, equal1.microsecond }, Collections.emptyMap());
+
+		Assert.assertFalse(lt.apply(equal1, equal2));
+		Assert.assertFalse(lt.apply(equal2, equal1));
+
+		var identical = new DateTime(new org.python.Object[] { Int.getInt(9), Int.getInt(8), Int.getInt(7),
+				Int.getInt(6), Int.getInt(5), Int.getInt(4), Int.getInt(3210) }, Collections.emptyMap());
+
+		Assert.assertFalse(lt.apply(identical, identical));
+	}
+
+	@Test
+	void test_le() {
+		BiFunction<org.python.Object, org.python.Object, java.lang.Boolean> le = (lhs, rhs) -> {
+			return ((Bool) lhs.__le__(rhs)).value;
+		};
+
+		Assert.assertTrue(le.apply(DateTime.__min__(), DateTime.__max__()));
+		Assert.assertFalse(le.apply(DateTime.__max__(), DateTime.__min__()));
+
+		var a = new DateTime(new org.python.Object[] { Int.getInt(2), Int.getInt(3), Int.getInt(5), Int.getInt(7),
+				Int.getInt(11), Int.getInt(13), Int.getInt(17) }, Collections.emptyMap());
+		var b = new DateTime(new org.python.Object[] { Int.getInt(2), Int.getInt(3), Int.getInt(5), Int.getInt(7),
+				Int.getInt(11), Int.getInt(13), Int.getInt(19) }, Collections.emptyMap());
+
+		Assert.assertTrue(le.apply(a, b));
+		Assert.assertFalse(le.apply(b, a));
+
+		a = new DateTime(new org.python.Object[] { Int.getInt(1), Int.getInt(1), Int.getInt(1), Int.getInt(1),
+				Int.getInt(1), Int.getInt(1) }, Collections.emptyMap());
+		b = new DateTime(new org.python.Object[] { Int.getInt(2), Int.getInt(1), Int.getInt(1), Int.getInt(1),
+				Int.getInt(1), Int.getInt(1) }, Collections.emptyMap());
+
+		Assert.assertTrue(le.apply(a, b));
+		Assert.assertFalse(le.apply(b, a));
+
+		var equal1 = new DateTime(new org.python.Object[] { Int.getInt(1234), Int.getInt(5), Int.getInt(6),
+				Int.getInt(7), Int.getInt(8), Int.getInt(9), Int.getInt(101112) }, Collections.emptyMap());
+		var equal2 = new DateTime(new org.python.Object[] { equal1.year, equal1.month, equal1.day, equal1.hour,
+				equal1.minute, equal1.second, equal1.microsecond }, Collections.emptyMap());
+
+		Assert.assertTrue(le.apply(equal1, equal2));
+		Assert.assertTrue(le.apply(equal2, equal1));
+
+		var identical = DateTime.today();
+		Assert.assertTrue(le.apply(identical, identical));
+	}
+
+	@Test
+	void test_gt() {
+		BiFunction<org.python.Object, org.python.Object, java.lang.Boolean> gt = (lhs, rhs) -> {
+			return ((Bool) lhs.__gt__(rhs)).value;
+		};
+
+		Assert.assertFalse(gt.apply(DateTime.__min__(), DateTime.__max__()));
+		Assert.assertTrue(gt.apply(DateTime.__max__(), DateTime.__min__()));
+
+		var a = new DateTime(new org.python.Object[] { Int.getInt(1111), Int.getInt(2), Int.getInt(9), Int.getInt(0),
+				Int.getInt(0), Int.getInt(0), Int.getInt(0) }, Collections.emptyMap());
+		var b = new DateTime(new org.python.Object[] { Int.getInt(1111), Int.getInt(2), Int.getInt(9), Int.getInt(0),
+				Int.getInt(0), Int.getInt(0), Int.getInt(1) }, Collections.emptyMap());
+
+		Assert.assertFalse(gt.apply(a, b));
+		Assert.assertTrue(gt.apply(b, a));
+
+		a = new DateTime(new org.python.Object[] { Int.getInt(1), Int.getInt(1), Int.getInt(1), Int.getInt(1),
+				Int.getInt(1), Int.getInt(1) }, Collections.emptyMap());
+		b = new DateTime(new org.python.Object[] { Int.getInt(2), Int.getInt(1), Int.getInt(1), Int.getInt(1),
+				Int.getInt(1), Int.getInt(1) }, Collections.emptyMap());
+
+		Assert.assertFalse(gt.apply(a, b));
+		Assert.assertTrue(gt.apply(b, a));
+
+		var equal1 = new DateTime(new org.python.Object[] { Int.getInt(1234), Int.getInt(5), Int.getInt(6),
+				Int.getInt(7), Int.getInt(8), Int.getInt(9), Int.getInt(101112) }, Collections.emptyMap());
+		var equal2 = new DateTime(new org.python.Object[] { equal1.year, equal1.month, equal1.day, equal1.hour,
+				equal1.minute, equal1.second, equal1.microsecond }, Collections.emptyMap());
+
+		Assert.assertFalse(gt.apply(equal1, equal2));
+		Assert.assertFalse(gt.apply(equal2, equal1));
+
+		var identical = new DateTime(new org.python.Object[] { Int.getInt(9), Int.getInt(8), Int.getInt(7),
+				Int.getInt(6), Int.getInt(5), Int.getInt(4), Int.getInt(3210) }, Collections.emptyMap());
+
+		Assert.assertFalse(gt.apply(identical, identical));
+	}
+
+	@Test
+	void test_ge() {
+		BiFunction<org.python.Object, org.python.Object, java.lang.Boolean> ge = (lhs, rhs) -> {
+			return ((Bool) lhs.__ge__(rhs)).value;
+		};
+
+		Assert.assertFalse(ge.apply(DateTime.__min__(), DateTime.__max__()));
+		Assert.assertTrue(ge.apply(DateTime.__max__(), DateTime.__min__()));
+
+		var a = new DateTime(new org.python.Object[] { Int.getInt(2), Int.getInt(3), Int.getInt(5), Int.getInt(7),
+				Int.getInt(11), Int.getInt(13), Int.getInt(17) }, Collections.emptyMap());
+		var b = new DateTime(new org.python.Object[] { Int.getInt(2), Int.getInt(3), Int.getInt(5), Int.getInt(7),
+				Int.getInt(11), Int.getInt(13), Int.getInt(19) }, Collections.emptyMap());
+
+		Assert.assertFalse(ge.apply(a, b));
+		Assert.assertTrue(ge.apply(b, a));
+
+		a = new DateTime(new org.python.Object[] { Int.getInt(1), Int.getInt(1), Int.getInt(1), Int.getInt(1),
+				Int.getInt(1), Int.getInt(1) }, Collections.emptyMap());
+		b = new DateTime(new org.python.Object[] { Int.getInt(2), Int.getInt(1), Int.getInt(1), Int.getInt(1),
+				Int.getInt(1), Int.getInt(1) }, Collections.emptyMap());
+
+		Assert.assertFalse(ge.apply(a, b));
+		Assert.assertTrue(ge.apply(b, a));
+
+		var equal1 = new DateTime(new org.python.Object[] { Int.getInt(1234), Int.getInt(5), Int.getInt(6),
+				Int.getInt(7), Int.getInt(8), Int.getInt(9), Int.getInt(101112) }, Collections.emptyMap());
+		var equal2 = new DateTime(new org.python.Object[] { equal1.year, equal1.month, equal1.day, equal1.hour,
+				equal1.minute, equal1.second, equal1.microsecond }, Collections.emptyMap());
+
+		Assert.assertTrue(ge.apply(equal1, equal2));
+		Assert.assertTrue(ge.apply(equal2, equal1));
+
+		var identical = DateTime.today();
+		Assert.assertTrue(ge.apply(identical, identical));
+	}
 }
 
 	
