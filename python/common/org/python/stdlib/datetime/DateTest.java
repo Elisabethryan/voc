@@ -260,19 +260,19 @@ public class DateTest {
         //Two instances of equivalent attribute values
         Date testDate1 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
         Date testDate2 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
-        Assert.assertFalse(helpEq(testDate1, testDate2));
-        Assert.assertFalse(helpEq(testDate2, testDate1));
+        Assert.assertTrue(helpEq(testDate1, testDate2));
+        Assert.assertTrue(helpEq(testDate2, testDate1));
 
         //Test for inequal objects
         testDate2 = new Date(new Object[] {Int.getInt(2), Int.getInt(1), Int.getInt(1)}, null_kwargs);
-        Assert.assertTrue(helpEq(testDate1, testDate2));
+        Assert.assertFalse(helpEq(testDate1, testDate2));
         testDate2 = new Date(new Object[] {Int.getInt(1), Int.getInt(2), Int.getInt(1)}, null_kwargs);
-        Assert.assertTrue(helpEq(testDate1, testDate2));
+        Assert.assertFalse(helpEq(testDate1, testDate2));
         testDate2 = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(2)}, null_kwargs);
-        Assert.assertTrue(helpEq(testDate1, testDate2));
+        Assert.assertFalse(helpEq(testDate1, testDate2));
 
         //Test for same instance
-        Assert.assertFalse(helpEq(testDate1, testDate1));
+        Assert.assertTrue(helpEq(testDate1, testDate1));
     }
 
 
