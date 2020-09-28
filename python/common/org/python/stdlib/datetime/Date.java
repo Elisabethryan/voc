@@ -411,7 +411,7 @@ public class Date extends org.python.types.Object {
         }
         
         if(this == obj) {
-            return Bool.FALSE; 
+            return Bool.TRUE; 
         }
 
         return Bool.FALSE;
