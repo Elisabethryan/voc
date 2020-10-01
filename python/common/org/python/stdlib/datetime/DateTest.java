@@ -153,7 +153,6 @@ public class DateTest {
        
        // TODO: maybe should be moved to own method. Otherwise code above could pass if it throws ValueError even if it shouldn't.
        new Date(new Object[] {Int.getInt(0), Int.getInt(1), Int.getInt(1)}, null_kwargs);
-    }
 
     @Test(expected = ValueError.class)
     public void testMonth() {

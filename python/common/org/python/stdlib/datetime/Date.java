@@ -212,7 +212,7 @@ public class Date extends org.python.types.Object {
     }
 
     @org.python.Method(__doc__ = "")
-    public static org.python.Object __max__() {
+    private static org.python.Object __max__() {
 
 	org.python.types.Int day = org.python.types.Int.getInt(31);
 	org.python.types.Int month = org.python.types.Int.getInt(12);
@@ -224,7 +224,7 @@ public class Date extends org.python.types.Object {
 
     @org.python.Method(__doc__ = "")
 
-    public static org.python.Object __min__() {
+    private static org.python.Object __min__() {
 	org.python.types.Int day = org.python.types.Int.getInt(1);
 	org.python.types.Int month = org.python.types.Int.getInt(1);
 	org.python.types.Int year = org.python.types.Int.getInt(1);
@@ -313,7 +313,7 @@ public class Date extends org.python.types.Object {
     @org.python.Method(__doc__ = "Returns if two Dates doesn't hold the same values or is not the same instance")
     public org.python.Object __neq__(org.python.Object obj) {
         if(obj instanceof Date) {
-        	Date date = (Date)obj;
+        	Date date = (Date) obj;
         	
         	double thisYear = ((org.python.types.Int) this.year).value;
         	double thisMonth = ((org.python.types.Int) this.month).value;
@@ -368,20 +368,6 @@ public class Date extends org.python.types.Object {
         return Bool.FALSE;
     }
 
-
-    @org.python.Method(__doc__ = "Returns true if...")
-    public org.python.Object __le__(org.python.Object obj) {
-    	if ((boolean) this.__lt__((obj)).toJava()) {
-    		return Bool.TRUE;
-    	}
-    	
-    	if ((boolean)this.__eq__((obj)).toJava()) {
-    		return Bool.TRUE;
-    	}
-    	
-    	return Bool.FALSE;
-    }
-    
     @org.python.Method(__doc__ = "Returns true if arg date is newer or equal to this")
     
     public org.python.Object __ge__(org.python.Object obj) {
