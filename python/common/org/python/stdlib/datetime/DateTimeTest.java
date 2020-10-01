@@ -183,7 +183,9 @@ class DateTimeTest {
 
     @Test
     void test_year() {
-        for (long year = 1; year <= 9999L; ++year) {
+        long[] years = {1, 1500, 2000, 2900, 9999};
+
+        for (long year : years) {
             var py_year = Int.getInt(year);
             var py_month = Int.getInt(1);
             var py_day = Int.getInt(1);
@@ -205,7 +207,9 @@ class DateTimeTest {
 
     @Test
     void test_month() {
-        for (long month = 1; month <= 12; ++month) {
+        long[] months = {1, 2, 6, 7, 11, 12};
+
+        for (long month : months) {
             var py_year = Int.getInt(1970);
             var py_month = Int.getInt(month);
             var py_day = Int.getInt(1);
@@ -227,7 +231,9 @@ class DateTimeTest {
 
     @Test
     void test_day() {
-        for (long day = 1; day <= 31; ++day) {
+        long[] days = {1, 2, 3, 15, 16, 29, 30, 31};
+
+        for (long day : days) {
             var py_year = Int.getInt(1970);
             var py_month = Int.getInt(1);
             var py_day = Int.getInt(day);
@@ -249,7 +255,9 @@ class DateTimeTest {
 
     @Test
     void test_hour() {
-        for (long hour = 0; hour <= 23; ++hour) {
+        long[] hours = {0, 1, 2, 3, 12, 20, 21, 22, 23};
+
+        for (long hour : hours) {
             var py_year = Int.getInt(1970);
             var py_month = Int.getInt(1);
             var py_day = Int.getInt(1);
@@ -273,8 +281,10 @@ class DateTimeTest {
     }
 
     @Test
-    void test__minute_() {
-        for (long minute = 0; minute <= 59; ++minute) {
+    void test_minute() {
+        long[] minutes = {0, 1, 2, 3, 30, 56, 57, 58, 59};
+
+        for (long minute : minutes) {
             var py_year = Int.getInt(1970);
             var py_month = Int.getInt(1);
             var py_day = Int.getInt(1);
@@ -300,7 +310,9 @@ class DateTimeTest {
 
     @Test
     void test_second() {
-        for (long second = 0; second <= 59; ++second) {
+        long[] seconds = {0, 1, 2, 3, 30, 56, 57, 58, 59};
+
+        for (long second : seconds) {
             var py_year = Int.getInt(1970);
             var py_month = Int.getInt(1);
             var py_day = Int.getInt(1);
@@ -327,7 +339,9 @@ class DateTimeTest {
 
     @Test
     void test_microsecond() {
-        for (long microsecond = 0; microsecond <= 9999; ++microsecond) {
+        long[] microseconds = {0, 1, 2, 4000, 5000, 6000, 9997, 9998, 9999};
+
+        for (long microsecond : microseconds) {
             var py_year = Int.getInt(1970);
             var py_month = Int.getInt(1);
             var py_day = Int.getInt(1);
