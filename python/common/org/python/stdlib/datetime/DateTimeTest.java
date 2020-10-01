@@ -16,9 +16,7 @@ import org.python.exceptions.TypeError;
 import org.python.exceptions.ValueError;
 import org.python.types.Bool;
 import org.python.types.Int;
-// Constructor test? (Different tests at creating DateTime object)
-// Attribute tests? (Check that they are set correctly)
-// Or are  done through all the other tests?
+
 
 
 class DateTimeTest {
@@ -458,8 +456,7 @@ class DateTimeTest {
 
 
     }
-    // String input = "2012-22-01";
-    // String input = "2011-11-04T00:05:23.987";
+
     @Test
     void test_fromisoformat() {
         DateTime dtIso = DateTime.fromisoformat(new org.python.types.Str("2012-12-01"));

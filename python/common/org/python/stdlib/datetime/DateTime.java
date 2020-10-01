@@ -292,8 +292,8 @@ public class DateTime extends org.python.types.Object {
     }
 
     @org.python.Method(
-        __doc__ = "Construct a time from the output of isoformat().",
-        args = {"time_string"}
+            __doc__ = "Construct a time from the output of isoformat().",
+            args = {"time_string"}
     )
     public static DateTime fromisoformat(org.python.Object time_string) {
         String input = (String) time_string.toJava();
