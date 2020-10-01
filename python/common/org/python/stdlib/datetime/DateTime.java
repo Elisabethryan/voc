@@ -244,7 +244,7 @@ public class DateTime extends org.python.types.Object {
 
     }
 
-    @org.python.Method(__doc__ = "")
+    @org.python.Method(__doc__ = "Return ctime() style string.")
     public org.python.Object ctime() {
 
         String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
@@ -291,8 +291,12 @@ public class DateTime extends org.python.types.Object {
 
     }
 
-    public static DateTime fromisoformat(org.python.Object isoString) {
-        String input = (String) isoString.toJava();
+    @org.python.Method(
+        __doc__ = "Construct a time from the output of isoformat().",
+        args = {"time_string"}
+    )
+    public static DateTime fromisoformat(org.python.Object time_string) {
+        String input = (String) time_string.toJava();
         if (input.indexOf("+") != -1) {
             throw new org.python.exceptions.NotImplementedError("Timezones has not been implemented");
         }
