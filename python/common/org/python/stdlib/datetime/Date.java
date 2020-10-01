@@ -212,7 +212,7 @@ public class Date extends org.python.types.Object {
     }
 
     @org.python.Method(__doc__ = "")
-    private static org.python.Object __max__() {
+    public static org.python.Object __max__() {
 
 	org.python.types.Int day = org.python.types.Int.getInt(31);
 	org.python.types.Int month = org.python.types.Int.getInt(12);
@@ -224,7 +224,7 @@ public class Date extends org.python.types.Object {
 
     @org.python.Method(__doc__ = "")
 
-    private static org.python.Object __min__() {
+    public static org.python.Object __min__() {
 	org.python.types.Int day = org.python.types.Int.getInt(1);
 	org.python.types.Int month = org.python.types.Int.getInt(1);
 	org.python.types.Int year = org.python.types.Int.getInt(1);
