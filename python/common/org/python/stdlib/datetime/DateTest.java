@@ -170,37 +170,44 @@ public class DateTest {
        
        new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(0)}, null_kwargs);
     }
-    @Test(expected = ValueError.class)
+    @Test()
     public void testYear() {
        Date testValidYear = new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(1)}, null_kwargs);
        Assert.assertEquals(testValidYear.__year__(), new org.python.types.Str("2020"));
        
        Date testEdgeCaseYear = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
        Assert.assertEquals(testEdgeCaseYear.__year__(), new org.python.types.Str("1"));
-       
-       // TODO: maybe should be moved to own method. Otherwise code above could pass if it throws ValueError even if it shouldn't.
-       new Date(new Object[] {Int.getInt(0), Int.getInt(1), Int.getInt(1)}, null_kwargs);
+    }
+    
+    @Test(expected = ValueError.class) 
+    public void testYearThrowsError() {
+        new Date(new Object[] {Int.getInt(0), Int.getInt(1), Int.getInt(1)}, null_kwargs);
     }
 
-    @Test(expected = ValueError.class)
+    @Test()
     public void testMonth() {
        Date testDate = new Date(new Object[] {Int.getInt(2020), Int.getInt(9), Int.getInt(1)}, null_kwargs);
        Assert.assertEquals(testDate.__month__(), new org.python.types.Str("9"));
-       
-       // TODO: maybe should be moved to own method. Otherwise code above could pass if it throws ValueError even if it shouldn't.
-       new Date(new Object[] {Int.getInt(2020), Int.getInt(0), Int.getInt(1)}, null_kwargs);
+    }
+    
+    @Test(expected = ValueError.class) 
+    public void testMonthThrowsError() {
+        new Date(new Object[] {Int.getInt(2020), Int.getInt(0), Int.getInt(1)}, null_kwargs);
     }
 
-    @Test(expected = ValueError.class)
+
+    @Test()
     public void testDay() {
     	Date testDateOneChar = new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(1)}, null_kwargs);
         Assert.assertEquals(testDateOneChar.__day__(), new org.python.types.Str("1"));
     	
        Date testDateTwoChars = new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(25)}, null_kwargs);
        Assert.assertEquals(testDateTwoChars.__day__(), new org.python.types.Str("25"));
-       
-       // TODO: maybe should be moved to own method. Otherwise code above could pass if it throws ValueError even if it shouldn't.
-       new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(0)}, null_kwargs);
+    }
+    
+    @Test(expected = ValueError.class) 
+    public void testDayThrowsError() {
+        new Date(new Object[] {Int.getInt(2020), Int.getInt(1), Int.getInt(0)}, null_kwargs);
     }
 
     @Test
@@ -244,9 +251,9 @@ public class DateTest {
     public void testCtime() {
         Date testDate = new Date(new Object[] {Int.getInt(1), Int.getInt(1), Int.getInt(1)}, null_kwargs);
         Assert.assertEquals(testDate.ctime(), new org.python.types.Str("Sat Jan  1 00:00:00 1"));
-        Assert.assertFalse(testDate.ctime(), new org.python.types.Str("Mon Jan  1 00:00:00 1"));
+        Assert.assertNotSame(testDate.ctime(), new org.python.types.Str("Mon Jan  1 00:00:00 1"));
         testDate = new Date(new Object[] {Int.getInt(2), Int.getInt(2), Int.getInt(2)}, null_kwargs);
-        Assert.assertFalse(testDate.ctime(), new org.python.types.Str("Sat Feb  2 00:00:00 2"));
+        Assert.assertNotSame(testDate.ctime(), new org.python.types.Str("Sat Feb  2 00:00:00 2"));
     }
 
     @Test
