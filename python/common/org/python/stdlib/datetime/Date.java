@@ -383,10 +383,10 @@ public class Date extends org.python.types.Object {
         	double thatDay = ((org.python.types.Int) date.day).value;
 
         	
-        	if (thisYear >= thatYear) {
+        	if (thisYear > thatYear) {
         		return Bool.TRUE;
         	} else if (thisYear == thatYear) {
-        		if (thisMonth >= thatMonth) {
+        		if (thisMonth > thatMonth) {
         			return Bool.TRUE;
         		} else if (thisMonth == thatMonth){
         			if (thisDay >= thatDay) {
