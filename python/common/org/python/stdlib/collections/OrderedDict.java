@@ -10,7 +10,8 @@ package org.python.stdlib.collections;
 // TODO: uncomment and remove this line from `test_collections.py`: "Different type prior to Python 3.5"
 
 public class OrderedDict extends org.python.types.Dict {
-
+	//public java.util.Map<org.python.Object, org.python.Object> value = null;
+	
     private OrderedDict() {
         super();
         this.value = new java.util.LinkedHashMap<org.python.Object, org.python.Object>();
@@ -89,12 +90,14 @@ public class OrderedDict extends org.python.types.Dict {
                 org.python.Object val = this.value.get(key);
                 if (val.toJava() instanceof org.python.internals.Scope) {
                     buffer.append(
-                            String.format("(%s, {...})", key.__repr__())
+                    		String.format("(%s, {...})", key.__repr__())
                     );
                 } else {
-                    buffer.append(
-                            String.format("(%s, %s)", key.__repr__(), val.__repr__())
-                    );
+                	buffer.append("(");
+                	buffer.append(key.__repr__());
+                	buffer.append(", ");
+                	buffer.append(val.__repr__());
+                	buffer.append(")");
                 }
             }
             buffer.append("])");
