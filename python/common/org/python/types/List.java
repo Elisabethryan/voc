@@ -612,7 +612,8 @@ public class List extends org.python.types.Object {
             args = {"item"}
     )
     public org.python.Object append(org.python.Object item) {
-        this.value.add(item);
+        int index = this.value.size();
+        this.insert(Int.getInt(index), item);
         return org.python.types.NoneType.NONE;
     }
 
