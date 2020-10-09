@@ -12,10 +12,16 @@ public class DictWorkload {
 
         for(int i = 0; i < 100000; i++) {
             dict.__setitem__(Int.getInt(i), Int.getInt(i));
+            dict.__contains__(Int.getInt(i));
+            dict.__repr__();    
         }
         
         for(int i = 0; i < 100000; i++) {
-            dict.pop(Int.getInt(i), Int.getInt(i));
+            var tmp = dict.pop(Int.getInt(i), Int.getInt(i));
+            dict.__contains__(Int.getInt(i));
+            dict.__setitem__(Int.getInt(i), tmp);
+            dict.__delitem__(Int.getInt(i));
+
         }
 
     }
