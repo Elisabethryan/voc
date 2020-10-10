@@ -1,4 +1,4 @@
-package voc;
+package org.python.types;
 
 import org.junit.Test;
 import org.python.exceptions.AttributeError;
@@ -473,5 +473,24 @@ public class DictTest {
 	arg.append(new org.python.types.Tuple(dictionaryElements));
 	org.python.Object[] args2 = { arg };
 	Dict dict = new Dict(args2, kwargs);
+    }
+
+    @Test
+    public void test_setitems(){
+    Map<org.python.Object, org.python.Object> mapping = new HashMap<>();
+    Dict dict = new Dict(mapping);
+    dict.__setitem__(new Str("key"), new Str("value"));
+    dict.__setitem__(new Dict(), new Str("value"));
+    assertTrue(dict.__contains__(new Str("key")).toBoolean());
+    assertFalse(dict.__contains__(new Str("not key")).toBoolean());
+    assertThrows(TypeError.class, () -> {dict.__setitem__(new Dict(), new Str("value"));});
+    }
+
+    @Test
+    public void test_contains(){
+    Map<org.python.Object, org.python.Object> mapping = new HashMap<>();
+    mapping.put(new Str("k1"), new Str("v1"));
+    mapping.put(new Str("k2"), new Str("v2"));
+
     }
 }
