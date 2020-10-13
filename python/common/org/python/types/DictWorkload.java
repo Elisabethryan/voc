@@ -10,17 +10,21 @@ public class DictWorkload {
         Map<org.python.Object, org.python.Object> mapping = new HashMap<>();
         Dict dict = new Dict(mapping);
 
-        for(int i = 0; i < 100000; i++) {
+        for(int i = 0; i < 79000; i++) {
             dict.__setitem__(Int.getInt(i), Int.getInt(i));
             dict.__contains__(Int.getInt(i));
         }
         
-        for(int i = 0; i < 100000; i++) {
-            dict.__contains__(Int.getInt(i));
-            dict.__delitem__(Int.getInt(i));
+        for(int i = 0; i < 79000; i++) {
+            dict.popitem();
 
         }
-
+        
+        for(int i = 0; i < 79000; i++) {
+            dict.__setitem__(Int.getInt(i), Int.getInt(i));
+            dict.__delitem__(Int.getInt(i));
+        }
+        
     }
     
 }
