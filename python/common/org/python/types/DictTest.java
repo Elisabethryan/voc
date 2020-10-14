@@ -1,5 +1,6 @@
 package org.python.types;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.python.exceptions.AttributeError;
 import org.python.exceptions.KeyError;
@@ -10,7 +11,6 @@ import org.python.types.Object;
 import org.python.types.Set;
 
 import java.util.*;
-import java.util.ArrayList;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -508,4 +508,44 @@ public class DictTest {
         assertEquals(result, new org.python.types.Tuple(item_pair));
     }
     
+    @Test 
+    public void test_delItem() {
+        Map<org.python.Object, org.python.Object> dict_map = new HashMap<>();dict_map.put(new Str("a"), Int.getInt(1));
+        Int y = Int.getInt(37);
+        dict_map.put(new Str("a"), Int.getInt(1));
+        dict_map.put(new Str("b"), Int.getInt(2));
+        dict_map.put(new Str("c"), y);
+        dict_map.put(new Str("d"), null);
+        Dict dict = new Dict(dict_map);
+        
+        assertTrue(dict.__contains__(new Str("a")).toBoolean());
+        assertTrue(dict.__contains__(new Str("b")).toBoolean());
+        assertTrue(dict.__contains__(new Str("c")).toBoolean());    
+        dict.__delitem__(new Str("a"));
+        assertFalse(dict.__contains__(new Str("a")).toBoolean());
+        
+        assertTrue(dict.__contains__(new Str("b")).toBoolean());
+        assertTrue(dict.__contains__(new Str("c")).toBoolean());        
+        dict.__delitem__(new Str("b"));
+        assertFalse(dict.__contains__(new Str("b")).toBoolean());
+        
+        assertTrue(dict.__contains__(new Str("c")).toBoolean());
+        dict.__delitem__(new Str("c"));
+        assertFalse(dict.__contains__(new Str("c")).toBoolean());
+        
+        Assert.assertThrows(KeyError.class, () -> { dict.__delitem__(new Str("d"));});
+  
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
