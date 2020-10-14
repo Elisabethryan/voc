@@ -493,4 +493,19 @@ public class DictTest {
     mapping.put(new Str("k2"), new Str("v2"));
 
     }
+    
+    @Test
+    public void test_popitem(){
+    	Map<org.python.Object, org.python.Object> mapping = new HashMap<>();
+        Dict dict = new Dict(mapping);
+        dict.__setitem__(new Str("key"), new Str("value"));
+        var result = dict.popitem();
+        java.util.List<org.python.Object> item_pair = new java.util.ArrayList<org.python.Object>();
+        org.python.Object key = new Str("key");
+        org.python.Object value = new Str("value");
+        item_pair.add(key);
+        item_pair.add(value);      
+        assertEquals(result, new org.python.types.Tuple(item_pair));
+    }
+    
 }
