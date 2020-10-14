@@ -499,10 +499,15 @@ public class DictTest {
     	Map<org.python.Object, org.python.Object> mapping = new HashMap<>();
         Dict dict = new Dict(mapping);
         dict.__setitem__(new Str("key"), new Str("value"));
+        dict.__setitem__(new Str("keys"), new Str("values"));
+        dict.__setitem__(new Str("key3"), new Str("value3"));
+        dict.__setitem__(new Str("key4"), new Str("value4"));
+        dict.__setitem__(new Str("key5"), new Str("value5"));
+//        dict.__setitem__(new Str("key6"), new Str("value6"));
         var result = dict.popitem();
         java.util.List<org.python.Object> item_pair = new java.util.ArrayList<org.python.Object>();
-        org.python.Object key = new Str("key");
-        org.python.Object value = new Str("value");
+        org.python.Object key = new Str("key5");
+        org.python.Object value = new Str("value5");
         item_pair.add(key);
         item_pair.add(value);      
         assertEquals(result, new org.python.types.Tuple(item_pair));
