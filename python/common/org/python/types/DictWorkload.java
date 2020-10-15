@@ -7,24 +7,18 @@ import java.util.Map;
 
 public class DictWorkload {
     public static void main(String[] args) {
+
         Map<org.python.Object, org.python.Object> mapping = new HashMap<>();
         Dict dict = new Dict(mapping);
 
-        for(int i = 0; i < 79000; i++) {
-            dict.__setitem__(Int.getInt(i), Int.getInt(i));
-            dict.__contains__(Int.getInt(i));
+        for(int i = 0; i < 500000; i++) {
+            dict.__setitem__(Int.getInt(i), Int.getInt(i));           
         }
-        
-        for(int i = 0; i < 79000; i++) {
-            dict.popitem();
-
-        }
-        
-        for(int i = 0; i < 79000; i++) {
-            dict.__setitem__(Int.getInt(i), Int.getInt(i));
+        for(int i = 0; i < 500000; i++) {
+            dict.__contains__(Int.getInt(i));        
+        }                     
+        for(int i = 0; i < 500000; i++) {
             dict.__delitem__(Int.getInt(i));
         }
-        
-    }
-    
+    } 
 }
