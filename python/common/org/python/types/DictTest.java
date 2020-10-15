@@ -480,7 +480,7 @@ public class DictTest {
     Map<org.python.Object, org.python.Object> mapping = new HashMap<>();
     Dict dict = new Dict(mapping);
     dict.__setitem__(new Str("key"), new Str("value"));
-    dict.__setitem__(new Dict(), new Str("value"));
+
     assertTrue(dict.__contains__(new Str("key")).toBoolean());
     assertFalse(dict.__contains__(new Str("not key")).toBoolean());
     assertThrows(TypeError.class, () -> {dict.__setitem__(new Dict(), new Str("value"));});
@@ -503,7 +503,7 @@ public class DictTest {
         dict.__setitem__(new Str("key3"), new Str("value3"));
         dict.__setitem__(new Str("key4"), new Str("value4"));
         dict.__setitem__(new Str("key5"), new Str("value5"));
-//        dict.__setitem__(new Str("key6"), new Str("value6"));
+        dict.__setitem__(new Str("key6"), new Str("value6"));
         var result = dict.popitem();
         java.util.List<org.python.Object> item_pair = new java.util.ArrayList<org.python.Object>();
         org.python.Object key = new Str("key5");
